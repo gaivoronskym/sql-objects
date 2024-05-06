@@ -1,4 +1,5 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SimpleSql.Types;
+using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Sample
 {
@@ -6,9 +7,10 @@ namespace SimpleSql.Sample
     {
         static void Main(string[] args)
         {
+            //Console.WriteLine(new In("Name", new StringsOf("0316", "0317", "0318", "0319")).Raw());
             var sql = new Select(
                 "Customers",
-                new Strings(
+                new SqlFields(
                     "Id",
                     "FirstName",
                     "LastName",
@@ -17,27 +19,11 @@ namespace SimpleSql.Sample
                 new Queries(
                     new Where(
                         new Condition(
-                            "Balance", ">", new TextOf("10.000")
+                            "Balance", ">", new SqlDecimalOf(10.0m)
                         )
                     ),
                     new And(
-                        new Brackets(
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Ivanov'")
-                                )
-                            ),
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Petrov'")
-                                )
-                            ),
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Dostoevskiy'")
-                                )
-                            )
-                        )
+                        new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
                     )
                 )
             ).Raw();

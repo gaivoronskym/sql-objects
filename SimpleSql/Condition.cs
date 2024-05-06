@@ -3,21 +3,33 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql;
 
-public class Condition : IQuery
+public sealed class Condition : IQuery
 {
-    private readonly string _field;
+    private readonly IQuery _field;
     private readonly string _operation;
-    private readonly IText _value;
+    private readonly IQuery _value;
 
-    public Condition(string field, string operation, IText value)
+    public Condition(IQuery field, string operation, IQuery value)
     {
         _field = field;
         _operation = operation;
         _value = value;
     }
 
-    public Condition(string field, IText value)
+    public Condition(IQuery field, IQuery value)
         : this(field, "=", value)
+    {
+
+    }
+
+    public Condition(string field, string operation, IQuery value)
+        : this(new RawSql(field), operation, value)
+    {
+        
+    }
+    
+    public Condition(string field, IQuery value)
+        : this(new RawSql(field), "=", value)
     {
 
     }
@@ -27,9 +39,9 @@ public class Condition : IQuery
         return new Formatted(
             "{0} {1} {2}",
             true,
-            new TextOf(_field),
+            new TextOf(_field.Raw),
             new TextOf(_operation),
-            _value
+            new TextOf(_value.Raw())
         ).AsString();
     }
 }

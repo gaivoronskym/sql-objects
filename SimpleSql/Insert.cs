@@ -1,16 +1,15 @@
-﻿namespace SimpleSql;
+﻿using Yaapii.Atoms.Text;
 
-public sealed class Insert : IQuery
+namespace SimpleSql;
+
+public sealed class Insert(string table, IEnumerable<ISqlParam> sqlparams) : IQuery
 {
-    private readonly string _table;
-
-    public Insert(string table)
-    {
-        _table = table;
-    }
-
     public string Raw()
     {
-        throw new NotImplementedException();
+        return new Joined(
+            Environment.NewLine,
+            new Formatted("INSERT INTO {0} ({1})", new TextOf(table), new Joined(", ", sqlparams.Select(s => s.Key()))),
+            new Formatted("({0})", new Joined(", ", sqlparams.Select(s => s.Query().Raw())))
+        ).AsString();
     }
 }

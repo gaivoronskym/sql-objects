@@ -1,5 +1,4 @@
-﻿using SimpleSql.Types;
-using Yaapii.Atoms.Text;
+﻿using SimpleSql.Servers.SqlServer;
 
 namespace SimpleSql.Sample
 {
@@ -7,24 +6,48 @@ namespace SimpleSql.Sample
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine(new In("Name", new StringsOf("0316", "0317", "0318", "0319")).Raw());
+            // var sql = new Select(
+            //     "Customers",
+            //     new SqlFields(
+            //         "Id",
+            //         "FirstName",
+            //         "LastName",
+            //         "Balance"
+            //     ),
+            //     new Queries(
+            //         new Where(
+            //             new Condition(
+            //                 "Balance", ">", new SqlDecimalOf(10.0m)
+            //             )
+            //         ),
+            //         new And(
+            //             new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
+            //         )
+            //     )
+            // ).Raw();
+
+            // var sql = new Insert(
+            //     "Items",
+            //     new SqlParamsOf(
+            //         new SqlParam("Name", new SqlStringOf("0316")),
+            //         new SqlParam("Description", new SqlNull()),
+            //         new SqlParam("Cost", new SqlDecimalOf(9.99m))
+            //     )
+            // ).Raw();
+
+            // var sql = new Delete(
+            //     "Categories",
+            //     new Where(new Condition("Id", new SqlIntOf(5)))
+            // ).Raw();
+
             var sql = new Select(
-                "Customers",
+                "Items item",
                 new SqlFields(
-                    "Id",
-                    "FirstName",
-                    "LastName",
-                    "Balance"
+                    "item.Id", "item.Name", "itemSettings.DontSync"
                 ),
                 new Queries(
-                    new Where(
-                        new Condition(
-                            "Balance", ">", new SqlDecimalOf(10.0m)
-                        )
-                    ),
-                    new And(
-                        new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
-                    )
+                    new InnerJoin("ItemSettings itemSetting", "itemSetting.ItemId", "item.Id"),
+                    new OrderByAsc("item.Id")
                 )
             ).Raw();
             

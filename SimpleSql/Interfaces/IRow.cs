@@ -3,6 +3,8 @@
 public interface IRow : IDictionary<string, object>
 {
     int Int(string key);
+    
+    long Long(string key);
 
     string String(string key);
 

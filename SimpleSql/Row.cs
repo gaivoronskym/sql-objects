@@ -16,6 +16,11 @@ public class Row : Dictionary<string, object>, IRow
         return Convert.ToInt32(this[key]);
     }
 
+    public long Long(string key)
+    {
+        return Convert.ToInt64(this[key]);
+    }
+
     public string String(string key)
     {
         return Convert.ToString(this[key]) ?? string.Empty;

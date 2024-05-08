@@ -1,4 +1,6 @@
-﻿using SimpleSql.Servers.SqlServer;
+﻿using SimpleSql.Common;
+using SimpleSql.Servers.SqlServer;
+using SimpleSql.Types;
 
 namespace SimpleSql.Sample
 {
@@ -6,52 +8,62 @@ namespace SimpleSql.Sample
     {
         static void Main(string[] args)
         {
-            // var sql = new Select(
-            //     "Customers",
-            //     new SqlFields(
-            //         "Id",
-            //         "FirstName",
-            //         "LastName",
-            //         "Balance"
-            //     ),
-            //     new Queries(
-            //         new Where(
-            //             new Condition(
-            //                 "Balance", ">", new SqlDecimalOf(10.0m)
-            //             )
-            //         ),
-            //         new And(
-            //             new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
-            //         )
-            //     )
-            // ).Raw();
+            new Select(
+                "Customers",
+                new SqlFields(
+                    "Id",
+                    "FirstName",
+                    "LastName",
+                    "Balance"
+                ),
+                new Queries(
+                    new Where(
+                        new Condition(
+                            "Balance", ">", 10m
+                        )
+                    ),
+                    new And(
+                        new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
+                    )
+                )
+            ).Raw();
 
-            // var sql = new Insert(
-            //     "Items",
-            //     new SqlParamsOf(
-            //         new SqlParam("Name", new SqlStringOf("0316")),
-            //         new SqlParam("Description", new SqlNull()),
-            //         new SqlParam("Cost", new SqlDecimalOf(9.99m))
-            //     )
-            // ).Raw();
+            new Insert(
+                "Items",
+                new SqlParamsOf(
+                    new SqlParam("Name", "0316"),
+                    new SqlParam("Description", new SqlNull()),
+                    new SqlParam("Cost", 9.99m)
+                )
+            ).Raw();
 
             // var sql = new Delete(
             //     "Categories",
             //     new Where(new Condition("Id", new SqlIntOf(5)))
             // ).Raw();
 
-            var sql = new Select(
+            new Select(
                 "Items item",
                 new SqlFields(
-                    "item.Id", "item.Name", "itemSettings.DontSync"
+                    "item.Id", "item.Name", "itemSetting.DontSync"
                 ),
                 new Queries(
                     new InnerJoin("ItemSettings itemSetting", "itemSetting.ItemId", "item.Id"),
                     new OrderByAsc("item.Id")
                 )
             ).Raw();
+
+            new Update(
+                "Items",
+                new SqlParamsOf(
+                    new SqlParam("Cost", 7.99m)
+                ),
+                new Where(
+                    new Condition("Id", 1)
+                )
+            ).Raw();
             
-            Console.WriteLine(sql);
+            //Console.WriteLine(sql);
             Console.ReadKey();
         }
     }

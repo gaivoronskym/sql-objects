@@ -1,6 +1,6 @@
 ﻿using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
 public sealed class Select : IQuery
 {
@@ -35,7 +35,8 @@ public sealed class Select : IQuery
             new TextOf("SELECT"),
             new Joined(", ", _fields.Select(f => f.Raw()), true),
             new Formatted("FROM {0}", _table),
-            new Joined(Environment.NewLine, _queries.Select(q => q.Raw()))
+            new Joined(Environment.NewLine, _queries.Select(q => q.Raw())),
+            new TextOf(";")
         ).AsString();
     }
 }

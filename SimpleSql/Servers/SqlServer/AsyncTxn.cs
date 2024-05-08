@@ -1,33 +1,32 @@
 ﻿using System.Data;
 using SimpleSql.Interfaces;
 
-namespace SimpleSql;
+namespace SimpleSql.Servers.SqlServer;
 
-public class SyncTransaction : ISyncTransaction
+public class AsyncTxn : IAsyncTxn
 {
     private readonly IDbConnection _connection;
-    private readonly Action _action;
+    private readonly Func<Task> _action;
     private readonly IsolationLevel _isolationLevel;
 
-    public SyncTransaction(IDbConnection connection, Action action)
+    public AsyncTxn(IDbConnection connection, Func<Task> action)
         : this(connection, action, IsolationLevel.ReadCommitted)
     {
         
     }
 
-    public SyncTransaction(IDbConnection connection, Action action, IsolationLevel isolationLevel)
+    public AsyncTxn(IDbConnection connection, Func<Task> action, IsolationLevel isolationLevel)
     {
         _connection = connection;
         _action = action;
         _isolationLevel = isolationLevel;
     }
 
-    public void Invoke()
+    public async Task Invoke()
     {
         using (var scope = _connection.BeginTransaction(_isolationLevel))
         {
-            _action();
-            
+            await _action();
             scope.Commit();
         }
     }

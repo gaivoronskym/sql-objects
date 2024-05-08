@@ -1,6 +1,6 @@
 ﻿namespace SimpleSql.Interfaces;
 
-public interface IAsyncTransaction
+public interface IAsyncTxn
 {
     Task Invoke();
 }

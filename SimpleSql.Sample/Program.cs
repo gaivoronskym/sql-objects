@@ -1,7 +1,6 @@
 ﻿using System.Data.SqlClient;
 using SimpleSql.Common;
 using SimpleSql.Servers.SqlServer;
-using SimpleSql.Types;
 
 namespace SimpleSql.Sample
 {
@@ -17,28 +16,60 @@ namespace SimpleSql.Sample
 
             try
             {
-                var rows = new SyncFetch(
+                // var rows = new SyncFetch(
+                //     connection,
+                //     new Select(
+                //         "[Items] _item",
+                //         new Queries(
+                //             new RawSql("_item.[Id]"),
+                //             new RawSql("_item.[Name]"),
+                //             new SumOf("ISNULL(_inventory.[Quantity], 0)", "[InStockQuantity]")
+                //         ),
+                //         new Queries(
+                //             new LeftJoin(
+                //                 "[Inventories] _inventory",
+                //                 "_item.[Id]",
+                //                 "_inventory.[ItemId]",
+                //                 new And(
+                //                     new Condition("_inventory.[Shipped]", false)
+                //                 )
+                //             ),
+                //             new GroupBy("_item.[Id]", "_item.[Name]")
+                //         )
+                //     )
+                // ).Rows();
+
+                new SyncTxn.ReadUnCommitted(
                     connection,
-                    new Select(
-                        "[Items] _item",
-                        new Queries(
-                            new RawSql("_item.[Id]"),
-                            new RawSql("_item.[Name]"),
-                            new SumOf("ISNULL(_inventory.[Quantity], 0)", "[InStockQuantity]")
-                        ),
-                        new Queries(
-                            new LeftJoin(
-                                "[Inventories] _inventory",
-                                "_item.[Id]",
-                                "_inventory.[ItemId]",
-                                new And(
-                                    new Condition("_inventory.[Shipped]", false)
+                    () =>
+                    {
+                        new SyncExecution<int>(
+                            connection,
+                            new Insert(
+                                "[Items]",
+                                new SqlParamsOf(
+                                    new SqlParam("[Name]", "Samsung")
                                 )
-                            ),
-                            new GroupBy("_item.[Id]", "_item.[Name]")
-                        )
-                    )
-                ).Rows();
+                            )
+                        ).Invoke();
+
+                        var samsung = new SyncFetch(
+                            connection,
+                            new Select(
+                                "[Items]",
+                                new SqlFields(
+                                    "[Id]",
+                                    "[Name]"
+                                ),
+                                new Queries(
+                                    new Where(
+                                        new Condition("[Name]", "Samsung")
+                                    )
+                                )
+                            )
+                        ).Rows();
+                    }
+                ).Invoke();
             }
             catch (Exception e)
             {

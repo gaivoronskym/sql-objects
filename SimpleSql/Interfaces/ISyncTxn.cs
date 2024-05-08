@@ -1,6 +1,6 @@
 ﻿namespace SimpleSql.Interfaces;
 
-public interface ISyncTransaction
+public interface ISyncTxn
 {
     void Invoke();
 }

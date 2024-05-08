@@ -4,9 +4,9 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public abstract class SyncTxn : SyncTxnWrap
+public abstract class Txn : TxnWrap
 {
-    protected SyncTxn(IDbConnection connection, Action action, IQuery isolationLevel) 
+    protected Txn(IDbConnection connection, Action action, IQuery isolationLevel) 
         : base(
             connection,
             action,
@@ -19,7 +19,7 @@ public abstract class SyncTxn : SyncTxnWrap
 
     protected override bool HasTransaction()
     {
-        var openedTransactions = new SyncExecution<int>(
+        var openedTransactions = new Execution<int>(
             Connection,
             new Select(
                 "sys.sysprocesses",
@@ -37,7 +37,7 @@ public abstract class SyncTxn : SyncTxnWrap
         return openedTransactions > 0;
     }
     
-    public class ReadCommitted : SyncTxn
+    public class ReadCommitted : Txn
     {
         public ReadCommitted(IDbConnection connection, Action action) 
             : base(
@@ -49,7 +49,7 @@ public abstract class SyncTxn : SyncTxnWrap
         }
     }
     
-    public class ReadUnCommitted : SyncTxn
+    public class ReadUnCommitted : Txn
     {
         public ReadUnCommitted(IDbConnection connection, Action action) 
             : base(

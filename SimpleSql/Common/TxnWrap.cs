@@ -3,7 +3,7 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql.Common;
 
-public abstract class SyncTxnWrap : ISyncTxn
+public abstract class TxnWrap : ITxn
 {
     protected readonly IDbConnection Connection;
     private readonly Action _action;
@@ -12,7 +12,7 @@ public abstract class SyncTxnWrap : ISyncTxn
     private readonly IQuery _commit;
     private readonly IQuery _rollback;
     
-    protected SyncTxnWrap(IDbConnection connection, Action action, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
+    protected TxnWrap(IDbConnection connection, Action action, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
     {
         Connection = connection;
         _action = action;
@@ -43,12 +43,12 @@ public abstract class SyncTxnWrap : ISyncTxn
 
     private void Begin()
     {
-        new SyncExecution<int>(
+        new Execution<int>(
             Connection,
             _isolationLevel
         ).Invoke();
         
-        new SyncExecution<int>(
+        new Execution<int>(
             Connection,
             _begin
         ).Invoke();
@@ -58,7 +58,7 @@ public abstract class SyncTxnWrap : ISyncTxn
     {
         if (HasTransaction())
         {
-            new SyncExecution<int>(
+            new Execution<int>(
                 Connection,
                 _commit
             ).Invoke();
@@ -69,7 +69,7 @@ public abstract class SyncTxnWrap : ISyncTxn
     {
         if (HasTransaction())
         {
-            new SyncExecution<int>(
+            new Execution<int>(
                 Connection,
                 _rollback
             ).Invoke();

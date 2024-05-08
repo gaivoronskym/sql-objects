@@ -1,6 +1,6 @@
 ﻿namespace SimpleSql.Interfaces;
 
-public interface ISyncFetch
+public interface IFetch
 {
     IList<IRow> Rows();
 }

@@ -1,6 +1,7 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SimpleSql.Interfaces;
+using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
 public abstract class Join(string table, string first, string second, string type, IQuery query, string operation = "=")
     : IQuery

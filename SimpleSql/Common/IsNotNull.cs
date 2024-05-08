@@ -1,18 +1,19 @@
-﻿using SimpleSql.Types;
+﻿using SimpleSql.Interfaces;
+using SimpleSql.Types;
 using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
-public sealed class IsNull : IQuery
+public sealed class IsNotNull : IQuery
 {
     private readonly IQuery _query;
 
-    public IsNull(IQuery query)
+    public IsNotNull(IQuery query)
     {
         _query = query;
     }
 
-    public IsNull(string field)
+    public IsNotNull(string field)
         : this(new RawSql(field))
     {
         
@@ -21,7 +22,7 @@ public sealed class IsNull : IQuery
     public string Raw()
     {
         return new Formatted(
-            "{0} IS {1}",
+            "{0} IS NOT {1}",
             _query.Raw(),
             new SqlNull().Raw()
         ).AsString();

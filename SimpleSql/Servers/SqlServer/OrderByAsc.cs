@@ -1,4 +1,6 @@
-﻿namespace SimpleSql.Servers.SqlServer;
+﻿using SimpleSql.Interfaces;
+
+namespace SimpleSql.Servers.SqlServer;
 
 public sealed class OrderByAsc : OrderBy
 {

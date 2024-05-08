@@ -1,4 +1,5 @@
-﻿using SimpleSql.Types;
+﻿using SimpleSql.Interfaces;
+using SimpleSql.Types;
 
 namespace SimpleSql;
 

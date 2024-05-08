@@ -1,8 +1,8 @@
-﻿using SimpleSql.Types;
-using Yaapii.Atoms;
+﻿using SimpleSql.Interfaces;
+using SimpleSql.Types;
 using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
 public sealed class Condition : IQuery
 {

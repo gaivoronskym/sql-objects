@@ -1,4 +1,4 @@
-﻿namespace SimpleSql;
+﻿namespace SimpleSql.Interfaces;
 
 public interface IQuery
 {

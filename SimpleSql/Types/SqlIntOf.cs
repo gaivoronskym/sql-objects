@@ -1,4 +1,6 @@
-﻿namespace SimpleSql.Types;
+﻿using SimpleSql.Interfaces;
+
+namespace SimpleSql.Types;
 
 public sealed class SqlIntOf : IQuery
 {

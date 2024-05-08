@@ -1,7 +1,8 @@
-﻿using SimpleSql.Types;
+﻿using SimpleSql.Interfaces;
+using SimpleSql.Types;
 using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
 public sealed class NotIn(IQuery field, IQuery query) : IQuery
 {

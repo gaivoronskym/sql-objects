@@ -1,6 +1,7 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SimpleSql.Interfaces;
+using Yaapii.Atoms.Text;
 
-namespace SimpleSql;
+namespace SimpleSql.Common;
 
 public sealed class LeftJoin(string table, string first, string second, IQuery query, string operation = "=") : Join(table, first, second, "LEFT", query, operation)
 {

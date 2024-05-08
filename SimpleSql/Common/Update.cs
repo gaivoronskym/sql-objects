@@ -1,4 +1,5 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SimpleSql.Interfaces;
+using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 

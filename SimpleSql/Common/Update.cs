@@ -9,6 +9,13 @@ public class Update : IQuery
     private readonly IEnumerable<ISqlParam> _params;
     private readonly IEnumerable<IQuery> _queries;
 
+    public Update(string table, IEnumerable<ISqlParam> @params, IEnumerable<IQuery> queries)
+    {
+        _table = table;
+        _params = @params;
+        _queries = queries;
+    }
+    
     public Update(string table, IEnumerable<ISqlParam> @params, params IQuery[] queries)
     {
         _table = table;

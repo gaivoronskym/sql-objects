@@ -43,31 +43,31 @@ namespace SimpleSql.Sample
                     connection,
                     () =>
                     {
+                        // var id = new Execution<long>(
+                        //     connection,
+                        //     new Insert(
+                        //         "[Contractors]",
+                        //         new SqlParamsOf(
+                        //             new SqlParam("[Name]", "Driver")
+                        //         ),
+                        //         new ScopeIdentity()
+                        //     )
+                        // ).Invoke();
+
                         new Execution<int>(
                             connection,
-                            new Insert(
-                                "[Items]",
+                            new Update(
+                                "[Contractors]",
                                 new SqlParamsOf(
-                                    new SqlParam("[Name]", "Samsung")
-                                )
-                            )
-                        ).Invoke();
-
-                        var samsung = new Fetch(
-                            connection,
-                            new Select(
-                                "[Items]",
-                                new SqlFields(
-                                    "[Id]",
-                                    "[Name]"
+                                    new SqlParam("[Name]", "Mr. Driver")
                                 ),
                                 new Queries(
                                     new Where(
-                                        new Condition("[Name]", "Samsung")
+                                        new Condition("[Id]", 2)
                                     )
                                 )
                             )
-                        ).Rows();
+                        ).Invoke();
                     }
                 ).Invoke();
             }

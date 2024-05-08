@@ -1,4 +1,6 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SimpleSql.Common;
+using SimpleSql.Servers.SqlServer;
+using SimpleSql.Types;
 
 namespace SimpleSql.Sample
 {
@@ -6,9 +8,9 @@ namespace SimpleSql.Sample
     {
         static void Main(string[] args)
         {
-            var sql = new Select(
+            new Select(
                 "Customers",
-                new Strings(
+                new SqlFields(
                     "Id",
                     "FirstName",
                     "LastName",
@@ -17,32 +19,51 @@ namespace SimpleSql.Sample
                 new Queries(
                     new Where(
                         new Condition(
-                            "Balance", ">", new TextOf("10.000")
+                            "Balance", ">", 10m
                         )
                     ),
                     new And(
-                        new Brackets(
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Ivanov'")
-                                )
-                            ),
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Petrov'")
-                                )
-                            ),
-                            new Or(
-                                new Condition(
-                                    "LastName", new TextOf("'Dostoevskiy'")
-                                )
-                            )
-                        )
+                        new In("LastName", new StringsOf("Ivanov", "Petrov", "Ivaschenko"))
                     )
                 )
             ).Raw();
+
+            new Insert(
+                "Items",
+                new SqlParamsOf(
+                    new SqlParam("Name", "0316"),
+                    new SqlParam("Description", new SqlNull()),
+                    new SqlParam("Cost", 9.99m)
+                )
+            ).Raw();
+
+            // var sql = new Delete(
+            //     "Categories",
+            //     new Where(new Condition("Id", new SqlIntOf(5)))
+            // ).Raw();
+
+            new Select(
+                "Items item",
+                new SqlFields(
+                    "item.Id", "item.Name", "itemSetting.DontSync"
+                ),
+                new Queries(
+                    new InnerJoin("ItemSettings itemSetting", "itemSetting.ItemId", "item.Id"),
+                    new OrderByAsc("item.Id")
+                )
+            ).Raw();
+
+            new Update(
+                "Items",
+                new SqlParamsOf(
+                    new SqlParam("Cost", 7.99m)
+                ),
+                new Where(
+                    new Condition("Id", 1)
+                )
+            ).Raw();
             
-            Console.WriteLine(sql);
+            //Console.WriteLine(sql);
             Console.ReadKey();
         }
     }

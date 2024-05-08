@@ -2,7 +2,7 @@
 
 namespace SimpleSql;
 
-public class And : IQuery
+public sealed class And : IQuery
 {
     private readonly IQuery _query;
 

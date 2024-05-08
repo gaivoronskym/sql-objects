@@ -2,7 +2,7 @@
 
 namespace SimpleSql;
 
-public class Brackets : IQuery
+public sealed class Brackets : IQuery
 {
     private readonly IEnumerable<IQuery> _queries;
 

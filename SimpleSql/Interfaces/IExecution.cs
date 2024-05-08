@@ -1,6 +1,6 @@
 ﻿namespace SimpleSql.Interfaces;
 
-public interface ISyncExecution<T>
+public interface IExecution<T>
 {
     T Invoke();
 }

@@ -4,19 +4,19 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql;
 
-public class SyncExecution<T> : ISyncExecution<T>
+public class Execution<T> : IExecution<T>
 {
     private readonly IDbConnection _connection;
     private readonly IQuery _query;
     private readonly int _timeout;
 
-    public SyncExecution(IDbConnection connection, IQuery query)
+    public Execution(IDbConnection connection, IQuery query)
         : this(connection, query, 30)
     {
         
     }
     
-    public SyncExecution(IDbConnection connection, IQuery query, int timeout)
+    public Execution(IDbConnection connection, IQuery query, int timeout)
     {
         _connection = connection;
         _query = query;

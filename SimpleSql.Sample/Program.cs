@@ -39,11 +39,11 @@ namespace SimpleSql.Sample
                 //     )
                 // ).Rows();
 
-                new SyncTxn.ReadUnCommitted(
+                new Txn.ReadUnCommitted(
                     connection,
                     () =>
                     {
-                        new SyncExecution<int>(
+                        new Execution<int>(
                             connection,
                             new Insert(
                                 "[Items]",
@@ -53,7 +53,7 @@ namespace SimpleSql.Sample
                             )
                         ).Invoke();
 
-                        var samsung = new SyncFetch(
+                        var samsung = new Fetch(
                             connection,
                             new Select(
                                 "[Items]",

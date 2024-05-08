@@ -5,19 +5,19 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql;
 
-public class SyncFetch : ISyncFetch
+public class Fetch : IFetch
 {
     private readonly IDbConnection _connection;
     private readonly IQuery _query;
     private readonly int _timeout;
 
-    public SyncFetch(IDbConnection connection, IQuery query)
+    public Fetch(IDbConnection connection, IQuery query)
         : this(connection, query, 30)
     {
         
     }
 
-    public SyncFetch(IDbConnection connection, IQuery query, int timeout)
+    public Fetch(IDbConnection connection, IQuery query, int timeout)
     {
         _connection = connection;
         _query = query;

@@ -3,15 +3,8 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Like : IQuery
+public sealed class Like(IQuery query) : IQuery
 {
-    private readonly IQuery _query;
-    
-    public Like(IQuery query)
-    {
-        _query = query;
-    }
-
     public Like(string query)
         : this(new RawSql(query))
     {
@@ -20,7 +13,7 @@ public sealed class Like : IQuery
 
     public string Raw()
     {
-        var sql = _query.Raw();
+        var sql = query.Raw();
         var withParams = new Contains(sql, "%");
         if (withParams.Value())
         {

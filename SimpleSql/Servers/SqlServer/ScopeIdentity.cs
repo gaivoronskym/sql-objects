@@ -2,7 +2,7 @@
 
 namespace SimpleSql.Servers.SqlServer;
 
-public class ScopeIdentity : IQuery
+public sealed class ScopeIdentity : IQuery
 {
     public string Raw()
     {

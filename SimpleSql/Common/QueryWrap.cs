@@ -3,20 +3,13 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public class QueryWrap : IQuery
+public sealed class QueryWrap(params IQuery[] queries) : IQuery
 {
-    private readonly IEnumerable<IQuery> _queries;
-
-    public QueryWrap(params IQuery[] queries)
-    {
-        _queries = queries;
-    }
-
     public string Raw()
     {
         return new Joined(
             Environment.NewLine,
-            _queries.Select(q => q.Raw())
+            queries.Select(q => q.Raw())
         ).AsString();
     }
 }

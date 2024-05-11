@@ -3,14 +3,9 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Brackets : IQuery
+public sealed class Brackets(params IQuery[] queries) : IQuery
 {
-    private readonly IEnumerable<IQuery> _queries;
-
-    public Brackets(params IQuery[] queries)
-    {
-        _queries = queries;
-    }
+    private readonly IEnumerable<IQuery> _queries = queries;
 
     public string Raw()
     {

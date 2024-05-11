@@ -4,19 +4,8 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Condition : IQuery
+public sealed class Condition(IQuery field, string operation, IQuery value) : IQuery
 {
-    private readonly IQuery _field;
-    private readonly string _operation;
-    private readonly IQuery _value;
-    
-    public Condition(IQuery field, string operation, IQuery value)
-    {
-        _field = field;
-        _operation = operation;
-        _value = value;
-    }
-
     public Condition(IQuery field, IQuery value)
         : this(field, "=", value)
     {
@@ -100,9 +89,9 @@ public sealed class Condition : IQuery
         return new Formatted(
             "{0} {1} {2}",
             true,
-            new TextOf(_field.Raw),
-            new TextOf(_operation),
-            new TextOf(_value.Raw())
+            new TextOf(field.Raw),
+            new TextOf(operation),
+            new TextOf(value.Raw())
         ).AsString();
     }
 }

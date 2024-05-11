@@ -3,32 +3,19 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql.Common;
 
-public abstract class TxnWrap : ITxn
+public abstract class TxnWrap(IDbConnection connection, Action action, IQuery isolationLevel, IQuery begin,
+        IQuery commit, IQuery rollback)
+    : ITxn
 {
-    protected readonly IDbConnection Connection;
-    private readonly Action _action;
-    private readonly IQuery _isolationLevel;
-    private readonly IQuery _begin;
-    private readonly IQuery _commit;
-    private readonly IQuery _rollback;
-    
-    protected TxnWrap(IDbConnection connection, Action action, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
-    {
-        Connection = connection;
-        _action = action;
-        _isolationLevel = isolationLevel;
-        _begin = begin;
-        _commit = commit;
-        _rollback = rollback;
-    }
-    
+    protected readonly IDbConnection Connection = connection;
+
     public void Invoke()
     {
         try
         {
             Begin();
         
-            _action();
+            action();
         
             Commit();
         }
@@ -45,12 +32,12 @@ public abstract class TxnWrap : ITxn
     {
         new Execution<int>(
             Connection,
-            _isolationLevel
+            isolationLevel
         ).Invoke();
         
         new Execution<int>(
             Connection,
-            _begin
+            begin
         ).Invoke();
     }
     
@@ -60,7 +47,7 @@ public abstract class TxnWrap : ITxn
         {
             new Execution<int>(
                 Connection,
-                _commit
+                commit
             ).Invoke();
         }
     }
@@ -71,7 +58,7 @@ public abstract class TxnWrap : ITxn
         {
             new Execution<int>(
                 Connection,
-                _rollback
+                rollback
             ).Invoke();
         }
     }

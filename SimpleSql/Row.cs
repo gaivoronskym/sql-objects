@@ -1,16 +1,9 @@
-﻿using System.ComponentModel;
-using SimpleSql.Interfaces;
+﻿using SimpleSql.Interfaces;
 
 namespace SimpleSql;
 
-public class Row : Dictionary<string, object>, IRow
+public sealed class Row(IDictionary<string, object> dictionary) : Dictionary<string, object>(dictionary), IRow
 {
-    public Row(IDictionary<string, object> dictionary)
-        : base(dictionary)
-    {
-        
-    }
-    
     public int Int(string key)
     {
         return Convert.ToInt32(this[key]);

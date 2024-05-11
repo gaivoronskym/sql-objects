@@ -4,30 +4,19 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql;
 
-public class Execution<T> : IExecution<T>
+public sealed class Execution<T>(IDbConnection connection, IQuery query, int timeout) : IExecution<T>
 {
-    private readonly IDbConnection _connection;
-    private readonly IQuery _query;
-    private readonly int _timeout;
-
     public Execution(IDbConnection connection, IQuery query)
         : this(connection, query, 30)
     {
         
     }
-    
-    public Execution(IDbConnection connection, IQuery query, int timeout)
-    {
-        _connection = connection;
-        _query = query;
-        _timeout = timeout;
-    }
 
     public T Invoke()
     {
-        return _connection.ExecuteScalar<T>(
-            sql: _query.Raw(),
-            commandTimeout: _timeout
+        return connection.ExecuteScalar<T>(
+            sql: query.Raw(),
+            commandTimeout: timeout
         )!;
     }
 }

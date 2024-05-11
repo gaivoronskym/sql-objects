@@ -2,7 +2,7 @@
 
 namespace SimpleSql.Servers.SqlServer;
 
-public class OrderByDesc : OrderBy
+public sealed class OrderByDesc : OrderBy
 {
     public OrderByDesc(params IQuery[] queries)
         : base(queries, "DESC")

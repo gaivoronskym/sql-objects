@@ -4,15 +4,8 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class IsNull : IQuery
+public sealed class IsNull(IQuery query) : IQuery
 {
-    private readonly IQuery _query;
-
-    public IsNull(IQuery query)
-    {
-        _query = query;
-    }
-
     public IsNull(string field)
         : this(new RawSql(field))
     {
@@ -23,7 +16,7 @@ public sealed class IsNull : IQuery
     {
         return new Formatted(
             "{0} IS {1}",
-            _query.Raw(),
+            query.Raw(),
             new SqlNull().Raw()
         ).AsString();
     }

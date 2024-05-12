@@ -3,22 +3,22 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class SumOf(IQuery query, string alias) : IQuery
+public class AvgOf(IQuery query, string alias) : IQuery
 {
 
-    public SumOf(IQuery query)
+    public AvgOf(IQuery query)
         : this(query, string.Empty)
     {
         
     }
 
-    public SumOf(string query)
+    public AvgOf(string query)
         : this(query, string.Empty)
     {
         
     }
     
-    public SumOf(string query, string alias)
+    public AvgOf(string query, string alias)
         : this(new RawSql(query), alias)
     {
         
@@ -27,7 +27,7 @@ public sealed class SumOf(IQuery query, string alias) : IQuery
     public string Raw()
     {
         return new Formatted(
-            "SUM({0}){1}",
+            "AVG({0}){1}",
             query.Raw(),
             new TextIf(
                 !string.IsNullOrEmpty(alias),

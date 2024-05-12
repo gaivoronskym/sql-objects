@@ -19,7 +19,7 @@ namespace SimpleSql.Sample
             var sql = new LoggedQuery(
                 new Select(
                     dboItems.TableName(),
-                    new SqlFields(
+                    new Columns(
                         dboItems.Id(),
                         dboItems.Name(),
                         dboItems.Cost(),

@@ -6,7 +6,7 @@ namespace SimpleSql.Common;
 
 public sealed class NotIn(IQuery field, IQuery query) : IQuery
 {
-    public NotIn(string field, params int[] values)
+    public NotIn(string field, IEnumerable<int> values)
         : this(
             new RawSql(field),
             new SqlCollection(values.Select(v => new SqlIntOf(v)))
@@ -15,7 +15,7 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
 
     }
     
-    public NotIn(string field, params long[] values)
+    public NotIn(string field, IEnumerable<long> values)
         : this(
             new RawSql(field),
             new SqlCollection(values.Select(v => new SqlBigintOf(v)))

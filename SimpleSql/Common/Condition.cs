@@ -83,6 +83,36 @@ public sealed class Condition(IQuery field, string operation, IQuery value) : IQ
     {
         
     }
+    
+    public Condition(IQuery field, string operation, long value)
+        : this(field, operation, new SqlBigintOf(value))
+    {
+        
+    }
+    
+    public Condition(IQuery field, string operation, int value)
+        : this(field, operation, new SqlIntOf(value))
+    {
+        
+    }
+    
+    public Condition(IQuery field, string operation, decimal value)
+        : this(field, operation, new SqlDecimalOf(value))
+    {
+        
+    }
+    
+    public Condition(IQuery field, string operation, string value)
+        : this(field, operation, new SqlStringOf(value))
+    {
+        
+    }
+    
+    public Condition(IQuery field, string operation, bool value)
+        : this(field, operation, new SqlBoolOf(value))
+    {
+        
+    }
 
     public string Raw()
     {

@@ -26,7 +26,7 @@ public class DbContractors : IContractors
                 _connection,
                 new Select(
                     "[Contractors]",
-                    new SqlFields(
+                    new Columns(
                         "[Id]"
                     )
                 )
@@ -46,7 +46,7 @@ public class DbContractors : IContractors
                     _connection,
                     new Select(
                         "[Contractors]",
-                        new SqlFields(
+                        new Columns(
                             "[Id]"
                         ),
                         new Queries(

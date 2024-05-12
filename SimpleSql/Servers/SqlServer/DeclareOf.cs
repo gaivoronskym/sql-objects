@@ -3,7 +3,7 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public class DeclareOf(string name, string type) : IQuery
+public sealed class DeclareOf(string name, string type) : IQuery
 {
     public string Raw()
     {

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql", "SimpleSql\Simp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql.Sample", "SimpleSql.Sample\SimpleSql.Sample.csproj", "{7519A5C7-585B-4A98-88A7-6C77B5E8212A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql.Tests", "SimpleSql.Tests\SimpleSql.Tests.csproj", "{CAFCC49F-FEE0-4802-A750-15AF0534E94F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7519A5C7-585B-4A98-88A7-6C77B5E8212A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7519A5C7-585B-4A98-88A7-6C77B5E8212A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7519A5C7-585B-4A98-88A7-6C77B5E8212A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAFCC49F-FEE0-4802-A750-15AF0534E94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAFCC49F-FEE0-4802-A750-15AF0534E94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAFCC49F-FEE0-4802-A750-15AF0534E94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAFCC49F-FEE0-4802-A750-15AF0534E94F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

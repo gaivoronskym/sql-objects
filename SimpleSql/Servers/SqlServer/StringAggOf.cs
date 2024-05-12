@@ -4,7 +4,7 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public class StringAggOf(IQuery expression, string separator, string alias) : IQuery
+public sealed class StringAggOf(IQuery expression, string separator, string alias) : IQuery
 {
     public StringAggOf(string expression, string separator)
         : this(expression, separator, string.Empty)

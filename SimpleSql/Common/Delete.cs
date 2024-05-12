@@ -7,11 +7,15 @@ public sealed class Delete(string table, params IQuery[] queries) : IQuery
 {
     public string Raw()
     {
-        return new Joined(
-            Environment.NewLine,
-            new Formatted("DELETE FROM {0}", table),
-            new Joined(Environment.NewLine, queries.Select(q => q.Raw())),
-            new TextOf(";")
+        return new Formatted("DELETE FROM {0}{1};",
+            new TextOf(table),
+            new TextIf(
+                queries.Any(),
+                new Formatted(
+                    "\r\n{0}",
+                    new Joined(Environment.NewLine, queries.Select(q => q.Raw()))
+                )
+            )
         ).AsString();
     }
 }

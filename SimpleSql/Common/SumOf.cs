@@ -28,7 +28,7 @@ public sealed class SumOf(IQuery query, string alias) : IQuery
     {
         return new Formatted(
             "SUM({0}){1}",
-            query.Raw(),
+            new TextOf(query.Raw()),
             new TextIf(
                 !string.IsNullOrEmpty(alias),
                 new Formatted(

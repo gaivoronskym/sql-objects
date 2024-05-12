@@ -8,8 +8,10 @@ public abstract class Join(string table, string first, string second, string typ
 {
     public string Raw()
     {
+        var queryRaw = query.Raw();
+
         return new Joined(
-            Environment.NewLine,
+            "",
             new Formatted(
                 "{0} JOIN {1} ON {2} {3} {4}",
                 type,
@@ -18,7 +20,14 @@ public abstract class Join(string table, string first, string second, string typ
                 operation,
                 second
             ),
-            new TextOf(query.Raw)
+            new TextIf(
+                !string.IsNullOrEmpty(queryRaw),
+                new Formatted(
+                    "{0}{1}",
+                    Environment.NewLine,
+                    queryRaw
+                )
+            )
         ).AsString();
     }
 }

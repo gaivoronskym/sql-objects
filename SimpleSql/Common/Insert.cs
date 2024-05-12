@@ -109,6 +109,8 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
             throw new ArgumentException("");
         }
 
+        var queryRaw = query.Raw();
+
         return new Joined(
             Environment.NewLine,
             new Formatted(
@@ -120,23 +122,28 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
                 )
             ),
             new Formatted(
-                " VALUES \n {0}",
+                "VALUES\r\n{0};{1}",
                 new Joined(
                     new Formatted(
                         ",{0}",
                         Environment.NewLine
                     ).AsString(),
                     records.Select(
-                        record =>
-                            new Formatted(
-                                "({0})",
-                                new Joined(", ", record.Select(p => p.Query().Raw()))
-                            ).AsString()
+                        record => new Formatted(
+                            "({0})",
+                            new Joined(", ", record.Select(p => p.Query().Raw()))
+                        ).AsString()
+                    )
+                ),
+                new TextIf(
+                    !string.IsNullOrEmpty(queryRaw),
+                    new Formatted(
+                        "{0}{1}",
+                        Environment.NewLine,
+                        queryRaw
                     )
                 )
-            ),
-            new TextOf(";"),
-            new TextOf(query.Raw)
+            )
         ).AsString();
     }
 }

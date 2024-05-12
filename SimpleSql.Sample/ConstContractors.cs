@@ -22,7 +22,7 @@ public class ConstContractors(IDbConnection connection) : IContractors
                 connection,
                 new Select(
                     "[Contractors]",
-                    new SqlFields(
+                    new Columns(
                         "[Id]",
                         "[Name]"
                     )
@@ -46,7 +46,7 @@ public class ConstContractors(IDbConnection connection) : IContractors
                     connection,
                     new Select(
                         "[Contractors]",
-                        new SqlFields(
+                        new Columns(
                             "[Id]",
                             "[Name]"
                         ),

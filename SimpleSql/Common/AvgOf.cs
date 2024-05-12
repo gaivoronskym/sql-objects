@@ -3,7 +3,7 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public class AvgOf(IQuery query, string alias) : IQuery
+public sealed class AvgOf(IQuery query, string alias) : IQuery
 {
 
     public AvgOf(IQuery query)
@@ -28,7 +28,7 @@ public class AvgOf(IQuery query, string alias) : IQuery
     {
         return new Formatted(
             "AVG({0}){1}",
-            query.Raw(),
+            new TextOf(query.Raw()),
             new TextIf(
                 !string.IsNullOrEmpty(alias),
                 new Formatted(

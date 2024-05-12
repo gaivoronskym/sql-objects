@@ -6,7 +6,7 @@ namespace SimpleSql.Common;
 
 public sealed class In(IQuery field, IQuery query) : IQuery
 {
-    public In(string field, params int[] values)
+    public In(string field, IEnumerable<int> values)
         : this(
             new RawSql(field),
             new SqlCollection(values.Select(v => new SqlIntOf(v)))
@@ -15,7 +15,7 @@ public sealed class In(IQuery field, IQuery query) : IQuery
 
     }
     
-    public In(string field, params long[] values)
+    public In(string field, IEnumerable<long> values)
         : this(
             new RawSql(field),
             new SqlCollection(values.Select(v => new SqlBigintOf(v)))

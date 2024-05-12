@@ -3,10 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Like(IQuery query) : IQuery
+public sealed class Like(IQuery field, IQuery query) : IQuery
 {
-    public Like(string query)
-        : this(new RawSql(query))
+    public Like(string field, string query)
+        : this(new RawSql(field), new RawSql(query))
     {
         
     }
@@ -18,13 +18,15 @@ public sealed class Like(IQuery query) : IQuery
         if (withParams.Value())
         {
             return new Formatted(
-                "'{0}'",
+                "{0} LIKE '{1}'",
+                field.Raw(),
                 sql
             ).AsString();
         }
 
         return new Formatted(
-            "'%{0}%'",
+            "{0} LIKE '%{1}%'",
+            field.Raw(),
             sql
         ).AsString();
     }

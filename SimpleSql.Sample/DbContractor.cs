@@ -26,7 +26,7 @@ public class DbContractor : IContractor
             _connection,
             new Select(
                 "[Contractors]",
-                new SqlFields("[Name]"),
+                new Columns("[Name]"),
                 new Queries(
                     new Where(
                         new Condition("[Id]", _id)

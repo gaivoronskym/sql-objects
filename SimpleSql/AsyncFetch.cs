@@ -12,14 +12,16 @@ public sealed class AsyncFetch(IDbConnection connection, IQuery query, int timeo
         
     }
 
-    public async Task<IList<IRow>> Rows()
+    public async Task<IList<IRow>> RowsAsync()
     {
         var res = await connection.QueryAsync(
             sql: query.Raw(),
-            commandTimeout: timeout
+            commandTimeout: timeout,
+            commandType: CommandType.Text
         );
+            
         var list = res.Cast<IDictionary<string, object>>();
-
+        
         IList<IRow> rows = new List<IRow>();
         foreach (var row in list)
         {

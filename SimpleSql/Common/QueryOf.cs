@@ -3,7 +3,7 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class QueryWrap(params IQuery[] queries) : IQuery
+public sealed class QueryOf(params IQuery[] queries) : IQuery
 {
     public string Raw()
     {

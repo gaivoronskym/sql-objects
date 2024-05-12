@@ -2,5 +2,5 @@
 
 public interface IAsyncExecution<T>
 {
-    Task<T> Invoke();
+    Task<T> InvokeAsync();
 }

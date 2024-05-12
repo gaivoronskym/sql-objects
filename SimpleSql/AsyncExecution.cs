@@ -12,7 +12,7 @@ public sealed class AsyncExecution<T>(IDbConnection connection, IQuery query, in
         
     }
 
-    public Task<T> Invoke()
+    public Task<T> InvokeAsync()
     {
         return connection.ExecuteScalarAsync<T>(
             sql: query.Raw(),

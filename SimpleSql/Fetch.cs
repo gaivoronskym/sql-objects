@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Data;
+﻿using System.Data;
 using Dapper;
 using SimpleSql.Interfaces;
 
@@ -18,7 +17,7 @@ public sealed class Fetch(IDbConnection connection, IQuery query, int timeout) :
         var res = connection.Query(
             sql: query.Raw(),
             commandTimeout: timeout
-        ).Cast<IDictionary<string, Object>>();
+        ).Cast<IDictionary<string, object>>();
 
         IList<IRow> rows = new List<IRow>();
         foreach (var row in res)

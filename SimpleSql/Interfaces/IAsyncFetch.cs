@@ -2,5 +2,5 @@
 
 public interface IAsyncFetch
 {
-    Task<IList<IRow>> Rows();
+    Task<IList<IRow>> RowsAsync();
 }

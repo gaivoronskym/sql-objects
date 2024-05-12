@@ -4,7 +4,7 @@ using Yaapii.Atoms.List;
 
 namespace SimpleSql;
 
-public sealed class SqlParamsOf : ListEnvelope<ISqlParam>
+public sealed class SqlParamsOf : ListEnvelope<ISqlParam>, ISqlParamsOf
 {
     public SqlParamsOf(params ISqlParam[] array) : this(new LiveMany<ISqlParam>(array))
     { }

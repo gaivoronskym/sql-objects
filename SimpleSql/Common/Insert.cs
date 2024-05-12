@@ -3,21 +3,82 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Insert(string table, IEnumerable<ISqlParam> sqlparams, IQuery query) : IQuery
+public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQuery query) : IQuery
 {
+    
+    public Insert(string table, string column, IEnumerable<DateTime> values)
+        : this(table, new SqlParamsOf(values.Select(v => new SqlParam(column, v))))
+    {
+        
+    }
 
-    public Insert(string table, IEnumerable<ISqlParam> sqlparams)
-        : this(table, sqlparams, new RawSql(""))
+    public Insert(string table, string column, IEnumerable<string> values)
+        : this(table, new SqlParamsOf(values.Select(v => new SqlParam(column, v))))
+    {
+        
+    }
+    
+    public Insert(string table, string column, IEnumerable<int> values)
+        : this(table, new SqlParamsOf(values.Select(v => new SqlParam(column, v))))
+    {
+        
+    }
+    
+    public Insert(string table, string column, IEnumerable<long> values)
+        : this(table, new SqlParamsOf(values.Select(v => new SqlParam(column, v))))
+    {
+        
+    }
+    
+    public Insert(string table, ISqlParamsOf sqlparams, IQuery query)
+        : this(table, new RecordsOf(sqlparams), query)
+    {
+        
+    }
+    
+    public Insert(string table, ISqlParamsOf sqlparams)
+        : this(table, new RecordsOf(sqlparams), new RawSql(""))
     {
         
     }
     
     public string Raw()
     {
+        if (!records.Any())
+        {
+            throw new ArgumentException("Should be at least one record to insert");
+        }
+        
+        var countOfParams = records.First().Count();
+        
+        if (records.Any(r => r.Count() != countOfParams))
+        {
+            throw new ArgumentException("");
+        }
+        
         return new Joined(
             Environment.NewLine,
-            new Formatted("INSERT INTO {0} ({1})", new TextOf(table), new Joined(", ", sqlparams.Select(s => s.Key()))),
-            new Formatted(" VALUES ({0})", new Joined(", ", sqlparams.Select(s => s.Query().Raw()))),
+            new Formatted(
+                "INSERT INTO {0} ({1})",
+                new TextOf(table),
+                new Joined(
+                    ", ",
+                    records.SelectMany(r => r).Select(p => p.Key()).Distinct()
+                )
+            ),
+            new Formatted(
+                " VALUES \n {0}",
+                new Joined(
+                    Environment.NewLine,
+                    records.Select(
+                        record =>
+                            new Formatted(
+                                "({0})",
+                                new Joined("),(", record.Select(p => p.Query().Raw()))
+                            ).AsString()
+                    )
+                )
+            ),
             new TextOf(";"),
             new TextOf(query.Raw)
         ).AsString();

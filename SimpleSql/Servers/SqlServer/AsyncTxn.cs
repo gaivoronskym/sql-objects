@@ -1,23 +1,42 @@
 ﻿using System.Data;
+using SimpleSql.Common;
 using SimpleSql.Interfaces;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public sealed class AsyncTxn(IDbConnection connection, Func<Task> action, IsolationLevel isolationLevel)
-    : IAsyncTxn
+public abstract class AsyncTxn(IDbConnection connection, Func<Task> action, IQuery isolationLevel)
+    : AsyncTxnWrap(connection,
+    action,
+    isolationLevel,
+    new RawSql("BEGIN TRANSACTION;"),
+    new RawSql("COMMIT TRANSACTION;"),
+    new RawSql("ROLLBACK TRANSACTION;"))
 {
-    public AsyncTxn(IDbConnection connection, Func<Task> action)
-        : this(connection, action, IsolationLevel.ReadCommitted)
-    {
+protected override async Task<bool> HasTransactionAsync()
+{
+    var openedTransactions = await new AsyncExecution<int>(
+        Connection,
+        new Select(
+            "sys.sysprocesses",
+            new Queries(
+                new RawSql("COUNT(*)")
+            ),
+            new Queries(
+                new Where(
+                    new Condition("open_tran", true)
+                )
+            )
+        )
+    ).InvokeAsync();
         
-    }
-
-    public async Task Invoke()
-    {
-        using (var scope = connection.BeginTransaction(isolationLevel))
-        {
-            await action();
-            scope.Commit();
-        }
-    }
+    return openedTransactions > 0;
+}
+    
+public class ReadCommitted(IDbConnection connection, Func<Task> action) : AsyncTxn(connection,
+    action,
+    new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"));
+    
+public class ReadUnCommitted(IDbConnection connection, Func<Task> action) : AsyncTxn(connection,
+    action,
+    new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"));
 }

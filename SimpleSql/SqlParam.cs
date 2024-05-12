@@ -35,6 +35,12 @@ public sealed class SqlParam(string key, IQuery query) : ISqlParam
         
     }
     
+    public SqlParam(string key, DateTime value)
+        : this(key, new SqlDatetimeOf(value))
+    {
+        
+    }
+    
     public string Key()
     {
         return key;

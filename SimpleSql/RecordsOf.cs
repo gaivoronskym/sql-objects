@@ -1,10 +1,9 @@
-﻿using SimpleSql.Interfaces;
-using Yaapii.Atoms.Enumerable;
+﻿using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.List;
 
 namespace SimpleSql;
 
-public class RecordsOf : ListEnvelope<ISqlParamsOf>
+public sealed class RecordsOf : ListEnvelope<ISqlParamsOf>
 {
     public RecordsOf(params ISqlParamsOf[] array) : this(new LiveMany<ISqlParamsOf>(array))
     { }

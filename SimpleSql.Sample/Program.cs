@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
+using System.Diagnostics;
 using SimpleSql.Common;
-using SimpleSql.Servers.SqlServer;
-using Yaapii.Atoms.List;
+using SimpleSql.Sample.Schema;
 
 namespace SimpleSql.Sample
 {
@@ -15,38 +15,78 @@ namespace SimpleSql.Sample
             );
             connection.Open();
 
-            var ids = new ListOf<long>();
-
-            var sql = new QueryOf(
-                new DeclareOf("ids", "[dbo].[Ids]"),
-                new InsertIf(
-                    ids.Count > 0,
-                    "@ids",
-                    "[Id]",
-                    ids
-                ),
-                new ProcedureOf(
-                    "[SearchItems]",
-                    new SqlParamsOf(
-                        new SqlParam("ids", new RawSql("@ids")),
-                        new SqlParam("name", "0316"),
-                        new SqlParam("skip", 0),
-                        new SqlParam("take", 500)
+            var dboItems = new DboItems("item");
+            var sql = new LoggedQuery(
+                new Select(
+                    dboItems.TableName(),
+                    new SqlFields(
+                        dboItems.Id(),
+                        dboItems.Name(),
+                        dboItems.Cost(),
+                        dboItems.Price()
+                    ),
+                    new Queries(
+                        new Where(
+                            new Condition(
+                                dboItems.Id(),
+                                5
+                            )
+                        )
                     )
                 )
             ).Raw();
-
-            /*var sql = new Insert(
-                "[Items]",
-                new SqlParamsOf(
-                    new SqlParam(
-                        "[Name]", "1234545735687243"
-                    )
-                ),
-                new ScopeIdentity()
-            ).Raw(); */
             
-            Console.Write(sql);
+            /*var ids = new ListOf<long>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            
+            var sql = new LoggedQuery(
+                new QueryOf(
+                    new DeclareOf("ids", "[dbo].[Ids]"),
+                    new InsertIf(
+                        ids.Count > 0,
+                        "@ids",
+                        "[Id]",
+                        ids
+                    ),
+                    new ProcedureOf(
+                        "[SearchItems]",
+                        new SqlParamsOf(
+                            new SqlParam("ids", new RawSql("@ids")),
+                            new SqlParam("name", "0316"),
+                            new SqlParam("skip", 0),
+                            new SqlParam("take", 500)
+                        )
+                    )
+                )
+            ).Raw();*/
+
+            Debug.Print("------------------------------------------------------------");
+
+            /*var dboItems = new DboItems();
+
+            var insertSql = new LoggedQuery(
+                new Insert(
+                    dboItems.TableName(),
+                    new RecordsOf(
+                        new SqlParamsOf(
+                            new SqlParam(
+                                dboItems.Name(), "436346437347"
+                            ),
+                            new SqlParam(
+                                dboItems.Cost(), 10.0m
+                            )
+                        ),
+                        new SqlParamsOf(
+                            new SqlParam(
+                                dboItems.Name(), "4867343463464"
+                            ),
+                            new SqlParam(
+                                dboItems.Cost(), 9.0m
+                            )
+                        )
+                    ),
+                    new ScopeIdentity()
+                )
+            ).Raw();*/
             
             // try
             // {

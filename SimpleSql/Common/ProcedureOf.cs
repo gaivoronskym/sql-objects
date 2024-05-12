@@ -7,17 +7,19 @@ public sealed class ProcedureOf(string name, IEnumerable<ISqlParam> sqlParams) :
 {
     public string Raw()
     {
-        return new Joined(
-            Environment.NewLine,
-            new Formatted(
-                "EXEC {0}",
-                name
-            ),
-            new Joined(
-                new Formatted(",{0}", Environment.NewLine),
-                sqlParams.Select(p => new Formatted("@{0} = {1}", p.Key(), p.Query().Raw()))
-            ),
-            new TextOf(";")
+        return new Formatted(
+            "EXEC {0}{1};",
+            new TextOf(name),
+            new TextIf(
+                sqlParams.Any(),
+                new Formatted(
+                    "\r\n{0}",
+                    new Joined(
+                        new Formatted(",{0}", Environment.NewLine),
+                        sqlParams.Select(p => new Formatted("@{0} = {1}", p.Key(), p.Query().Raw()))
+                    )
+                )
+            )
         ).AsString();
     }
 }

@@ -83,14 +83,14 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
 
     }
 
-    public Insert(string table, ISqlParamsOf sqlparams, IQuery query)
-        : this(table, new RecordsOf(sqlparams), query)
+    public Insert(string table, ISqlParamsOf sqlParams, IQuery query)
+        : this(table, new RecordsOf(sqlParams), query)
     {
 
     }
 
-    public Insert(string table, ISqlParamsOf sqlparams)
-        : this(table, new RecordsOf(sqlparams), new RawSql(""))
+    public Insert(string table, ISqlParamsOf sqlParams)
+        : this(table, new RecordsOf(sqlParams), new RawSql(""))
     {
 
     }
@@ -123,6 +123,7 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
             ),
             new Formatted(
                 "VALUES\r\n{0};{1}",
+                //records
                 new Joined(
                     new Formatted(
                         ",{0}",
@@ -135,6 +136,7 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
                         ).AsString()
                     )
                 ),
+                //additional query
                 new TextIf(
                     !string.IsNullOrEmpty(queryRaw),
                     new Formatted(

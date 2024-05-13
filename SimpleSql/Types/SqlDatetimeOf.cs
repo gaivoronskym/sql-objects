@@ -3,6 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Types;
 
+/// <summary>
+/// Converts DateTime to SQL DATETIME2
+/// </summary>
+/// <param name="value"></param>
 public sealed class SqlDatetimeOf(DateTime value) : IQuery
 {
     public string Raw()

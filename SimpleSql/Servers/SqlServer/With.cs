@@ -3,17 +3,20 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public sealed class With(string name, params IQuery[] queries) : IQuery
+/// <summary>
+/// Common table expression WITH [name_of_expression] AS (...)
+/// </summary>
+/// <param name="name">name of common table expression</param>
+/// <param name="expressions">list of expressions</param>
+public sealed class With(string name, params IQuery[] expressions) : IQuery
 {
-    private readonly IEnumerable<IQuery> _queries = queries;
-
     public string Raw()
     {
         return new Formatted(
             "WITH {0} AS ({1} {2} {3})",
             new TextOf(name),
             new TextOf(Environment.NewLine),
-            new Joined(Environment.NewLine, _queries.Select(q => q.Raw())),
+            new Joined(Environment.NewLine, expressions.Select(q => q.Raw())),
             new TextOf(Environment.NewLine)
         ).AsString();
     }

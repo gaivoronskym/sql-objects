@@ -4,6 +4,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql;
 
+/// <summary>
+/// SQL query
+/// </summary>
+/// <param name="val"></param>
 public sealed class RawSql(IText val) : IQuery
 {
     public RawSql(string val)

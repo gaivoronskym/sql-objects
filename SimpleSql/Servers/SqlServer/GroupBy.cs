@@ -3,10 +3,14 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public sealed class GroupBy(IEnumerable<IQuery> queries) : IQuery
+/// <summary>
+/// GROUP BY query
+/// </summary>
+/// <param name="expressions"></param>
+public sealed class GroupBy(IEnumerable<IQuery> expressions) : IQuery
 {
-    public GroupBy(params string[] fields)
-        : this(fields.Select(f => new RawSql(f)))
+    public GroupBy(params string[] expressions)
+        : this(expressions.Select(f => new RawSql(f)))
     {
         
     }
@@ -15,7 +19,7 @@ public sealed class GroupBy(IEnumerable<IQuery> queries) : IQuery
     {
         return new Formatted(
             "GROUP BY {0}",
-            new Joined(", ", queries.Select(q => q.Raw()))
+            new Joined(", ", expressions.Select(q => q.Raw()))
         ).AsString();
     }
 }

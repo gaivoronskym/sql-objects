@@ -3,6 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// WHERE query
+/// </summary>
+/// <param name="query">expression</param>
 public sealed class Where(IQuery query) : IQuery
 {
     public string Raw()

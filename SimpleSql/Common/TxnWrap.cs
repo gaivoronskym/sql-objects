@@ -3,6 +3,15 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Transaction wrapper
+/// </summary>
+/// <param name="connection">database connection</param>
+/// <param name="action">action to execute</param>
+/// <param name="isolationLevel"></param>
+/// <param name="begin"></param>
+/// <param name="commit"></param>
+/// <param name="rollback"></param>
 public abstract class TxnWrap(IDbConnection connection, Action action, IQuery isolationLevel, IQuery begin,
         IQuery commit, IQuery rollback)
     : ITxn

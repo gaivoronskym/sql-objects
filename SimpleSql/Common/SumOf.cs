@@ -2,7 +2,11 @@
 using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
-
+/// <summary>
+/// SUM function
+/// </summary>
+/// <param name="query">expression</param>
+/// <param name="alias">alias</param>
 public sealed class SumOf(IQuery query, string alias) : IQuery
 {
 

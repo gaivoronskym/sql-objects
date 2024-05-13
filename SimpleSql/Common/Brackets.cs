@@ -3,6 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Brackets
+/// </summary>
+/// <param name="queries"></param>
 public sealed class Brackets(params IQuery[] queries) : IQuery
 {
     private readonly IEnumerable<IQuery> _queries = queries;

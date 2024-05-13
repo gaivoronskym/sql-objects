@@ -14,7 +14,7 @@ public class HavingTest
             expected,
             new Having(
                 new Queries(
-                    new Condition(
+                    new ExpressionOf(
                         new SumOf(
                             "[Amount]"
                         ),

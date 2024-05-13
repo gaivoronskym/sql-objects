@@ -3,13 +3,17 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Or(IQuery query) : IQuery
+/// <summary>
+/// OR query
+/// </summary>
+/// <param name="expression">SQL expression</param>
+public sealed class Or(IQuery expression) : IQuery
 {
     public string Raw()
     {
         return new Formatted(
             "OR {0}",
-            query.Raw()
+            expression.Raw()
         ).AsString();
     }
 }

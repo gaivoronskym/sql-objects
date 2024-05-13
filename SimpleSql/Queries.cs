@@ -4,6 +4,9 @@ using Yaapii.Atoms.List;
 
 namespace SimpleSql;
 
+/// <summary>
+/// List of queries
+/// </summary>
 public sealed class Queries : ListEnvelope<IQuery>
 {
     public Queries(params IQuery[] array) : this(new LiveMany<IQuery>(array))

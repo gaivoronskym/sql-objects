@@ -27,7 +27,7 @@ public class InnerJoinTest
                 "_item.[Id]",
                 "_inventory.[ItemId]",
                 new And(
-                    new Condition("_inventory.[Quantity]", ">", 0)
+                    new ExpressionOf("_inventory.[Quantity]", ">", 0)
                 )
             ).Raw()
         );

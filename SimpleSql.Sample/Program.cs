@@ -27,7 +27,7 @@ namespace SimpleSql.Sample
                     ),
                     new Queries(
                         new Where(
-                            new Condition(
+                            new ExpressionOf(
                                 dboItems.Id(),
                                 5
                             )

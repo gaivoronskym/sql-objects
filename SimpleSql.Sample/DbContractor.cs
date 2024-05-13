@@ -29,7 +29,7 @@ public class DbContractor : IContractor
                 new Columns("[Name]"),
                 new Queries(
                     new Where(
-                        new Condition("[Id]", _id)
+                        new ExpressionOf("[Id]", _id)
                     )
                 )
             )

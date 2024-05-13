@@ -3,6 +3,11 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// AVG function
+/// </summary>
+/// <param name="query"></param>
+/// <param name="alias"></param>
 public sealed class AvgOf(IQuery query, string alias) : IQuery
 {
 

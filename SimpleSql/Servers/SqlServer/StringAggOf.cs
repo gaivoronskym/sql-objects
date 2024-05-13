@@ -4,6 +4,12 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
+/// <summary>
+/// STRING_AGG function
+/// </summary>
+/// <param name="expression">SQL expression</param>
+/// <param name="separator">separator</param>
+/// <param name="alias">alias</param>
 public sealed class StringAggOf(IQuery expression, string separator, string alias) : IQuery
 {
     public StringAggOf(string expression, string separator)

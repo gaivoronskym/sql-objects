@@ -2,6 +2,9 @@
 
 namespace SimpleSql.Servers.SqlServer;
 
+/// <summary>
+/// ORDER BY ... ASC query
+/// </summary>
 public sealed class OrderByAsc : OrderBy
 {
     public OrderByAsc(params IQuery[] queries)

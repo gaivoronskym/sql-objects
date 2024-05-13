@@ -3,6 +3,12 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Insert Into [Table_Name] ([]...[]) VALUES(...)
+/// </summary>
+/// <param name="table"></param>
+/// <param name="records"></param>
+/// <param name="query"></param>
 public sealed class Insert(string table, IEnumerable<ISqlParams> records, IQuery query) : IQuery
 {
     public Insert(string table, IEnumerable<ISqlParams> records)
@@ -94,7 +100,7 @@ public sealed class Insert(string table, IEnumerable<ISqlParams> records, IQuery
     {
 
     }
-
+    
     public string Raw()
     {
         if (!records.Any())

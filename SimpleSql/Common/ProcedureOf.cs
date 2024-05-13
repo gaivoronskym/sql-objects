@@ -3,6 +3,11 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Executes stored procedure
+/// </summary>
+/// <param name="name"></param>
+/// <param name="sqlParams"></param>
 public sealed class ProcedureOf(string name, IEnumerable<ISqlParam> sqlParams) : IQuery
 {
     public string Raw()

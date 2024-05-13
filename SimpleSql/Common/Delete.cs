@@ -3,6 +3,11 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Deletes data from [Table_Name]
+/// </summary>
+/// <param name="table"></param>
+/// <param name="queries"></param>
 public sealed class Delete(string table, params IQuery[] queries) : IQuery
 {
     public string Raw()

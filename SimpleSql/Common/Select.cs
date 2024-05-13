@@ -3,6 +3,12 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Select query
+/// </summary>
+/// <param name="table">name of table</param>
+/// <param name="columns">list of columns</param>
+/// <param name="queries">expressions</param>
 public sealed class Select(string table, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
     : IQuery
 {
@@ -17,7 +23,7 @@ public sealed class Select(string table, IEnumerable<IQuery> columns, IEnumerabl
     {
         
     }
-
+    
     public string Raw()
     {
         return new Formatted(

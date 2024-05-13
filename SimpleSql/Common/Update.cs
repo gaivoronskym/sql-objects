@@ -5,6 +5,12 @@ using Joined = Yaapii.Atoms.Text.Joined;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// UPDATE query
+/// </summary>
+/// <param name="table">name of table</param>
+/// <param name="params">columns and values</param>
+/// <param name="queries">expressions</param>
 public sealed class Update(string table, IEnumerable<ISqlParam> @params, IEnumerable<IQuery> queries)
     : IQuery
 {

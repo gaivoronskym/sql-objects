@@ -4,6 +4,13 @@ using SimpleSql.Interfaces;
 
 namespace SimpleSql;
 
+/// <summary>
+/// Asynchronously runs SQL statement
+/// </summary>
+/// <param name="connection">database connection</param>
+/// <param name="query">SQL query</param>
+/// <param name="timeout">command timeout</param>
+/// <typeparam name="T">type of result</typeparam>
 public sealed class AsyncExecution<T>(IDbConnection connection, IQuery query, int timeout) : IAsyncExecution<T>
 {
     public AsyncExecution(IDbConnection connection, IQuery query)

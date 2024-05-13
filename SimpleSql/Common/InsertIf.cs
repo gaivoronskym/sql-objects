@@ -2,6 +2,13 @@
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// Builds INSERT query according to the condition
+/// </summary>
+/// <param name="func"></param>
+/// <param name="table"></param>
+/// <param name="records"></param>
+/// <param name="query"></param>
 public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlParams> records, IQuery query) : IQuery
 {
 

@@ -44,7 +44,7 @@ public class UpdateTest
                 ),
                 new Queries(
                     new Where(
-                        new Condition(
+                        new ExpressionOf(
                             "[Id]",
                             100
                         )

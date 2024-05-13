@@ -3,6 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Types;
 
+/// <summary>
+/// Converts String to SQL literal
+/// </summary>
+/// <param name="val"></param>
 public sealed class SqlStringOf(string val) : IQuery
 {
     public string Raw()

@@ -4,7 +4,12 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
-public sealed class SetOf(string name, IQuery query) : IQuery
+/// <summary>
+/// SET [name] = [SQL_expression]; query
+/// </summary>
+/// <param name="name"></param>
+/// <param name="expression"></param>
+public sealed class SetOf(string name, IQuery expression) : IQuery
 {
     public SetOf(string name, bool value)
         :  this(name, new SqlBoolOf(value))
@@ -41,7 +46,7 @@ public sealed class SetOf(string name, IQuery query) : IQuery
         return new Formatted(
             "SET @{0} = {1};",
             name,
-            query.Raw()
+            expression.Raw()
         ).AsString();
     }
 }

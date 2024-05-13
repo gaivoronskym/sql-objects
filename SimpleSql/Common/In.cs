@@ -4,7 +4,12 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class In(IQuery field, IQuery query) : IQuery
+/// <summary>
+/// IN (...) query
+/// </summary>
+/// <param name="expression">SQL expression</param>
+/// <param name="values">list of values</param>
+public sealed class In(IQuery expression, IQuery values) : IQuery
 {
     public In(string field, IEnumerable<int> values)
         : this(
@@ -37,8 +42,8 @@ public sealed class In(IQuery field, IQuery query) : IQuery
     {
         return new Formatted(
             "{0} IN {1}",
-            field.Raw(),
-            query.Raw()
+            expression.Raw(),
+            values.Raw()
         ).AsString();
     }
 }

@@ -2,6 +2,9 @@
 
 namespace SimpleSql.Servers.SqlServer;
 
+/// <summary>
+/// ORDER BY ... DESC query
+/// </summary>
 public sealed class OrderByDesc : OrderBy
 {
     public OrderByDesc(params IQuery[] queries)

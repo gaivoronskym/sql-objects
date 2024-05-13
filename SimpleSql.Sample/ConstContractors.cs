@@ -52,7 +52,7 @@ public class ConstContractors(IDbConnection connection) : IContractors
                         ),
                         new Queries(
                             new Where(
-                                new Condition("[Id]", id)
+                                new ExpressionOf("[Id]", id)
                             )
                         )
                     )

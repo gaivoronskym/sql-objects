@@ -3,6 +3,10 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Servers.SqlServer;
 
+/// <summary>
+/// TOP [...] query
+/// </summary>
+/// <param name="rows"></param>
 public sealed class Top(int rows) : IQuery
 {
     public string Raw()

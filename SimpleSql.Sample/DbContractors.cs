@@ -51,7 +51,7 @@ public class DbContractors : IContractors
                         ),
                         new Queries(
                             new Where(
-                                new Condition("[Id]", id)
+                                new ExpressionOf("[Id]", id)
                             )
                         )
                     )

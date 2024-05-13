@@ -4,10 +4,14 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class IsNull(IQuery query) : IQuery
+/// <summary>
+/// IS NULL query
+/// </summary>
+/// <param name="expression">SQL expression</param>
+public sealed class IsNull(IQuery expression) : IQuery
 {
-    public IsNull(string field)
-        : this(new RawSql(field))
+    public IsNull(string expression)
+        : this(new RawSql(expression))
     {
         
     }
@@ -16,7 +20,7 @@ public sealed class IsNull(IQuery query) : IQuery
     {
         return new Formatted(
             "{0} IS {1}",
-            query.Raw(),
+            expression.Raw(),
             new SqlNull().Raw()
         ).AsString();
     }

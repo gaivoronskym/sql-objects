@@ -4,6 +4,11 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
+/// <summary>
+/// NOT IN (...) query
+/// </summary>
+/// <param name="field"></param>
+/// <param name="query"></param>
 public sealed class NotIn(IQuery field, IQuery query) : IQuery
 {
     public NotIn(string field, IEnumerable<int> values)

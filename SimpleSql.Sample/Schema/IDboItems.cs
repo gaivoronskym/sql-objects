@@ -1,4 +1,5 @@
-﻿using SimpleSql.Schema;
+﻿using SimpleSql.Interfaces;
+using SimpleSql.Schema;
 
 namespace SimpleSql.Sample.Schema;
 

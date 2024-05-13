@@ -1,4 +1,5 @@
-﻿using Yaapii.Atoms.Enumerable;
+﻿using SimpleSql.Interfaces;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.List;
 
 namespace SimpleSql;

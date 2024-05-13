@@ -1,6 +1,4 @@
-﻿using SimpleSql.Interfaces;
-
-namespace SimpleSql;
+﻿namespace SimpleSql.Interfaces;
 
 public interface ISqlParams : IEnumerable<ISqlParam>
 {

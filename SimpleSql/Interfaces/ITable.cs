@@ -1,4 +1,4 @@
-﻿namespace SimpleSql.Schema;
+﻿namespace SimpleSql.Interfaces;
 
 public interface ITable
 {

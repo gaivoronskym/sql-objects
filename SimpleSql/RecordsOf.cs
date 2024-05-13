@@ -3,15 +3,15 @@ using Yaapii.Atoms.List;
 
 namespace SimpleSql;
 
-public sealed class RecordsOf : ListEnvelope<ISqlParamsOf>
+public sealed class RecordsOf : ListEnvelope<ISqlParams>
 {
-    public RecordsOf(params ISqlParamsOf[] array) : this(new LiveMany<ISqlParamsOf>(array))
+    public RecordsOf(params ISqlParams[] array) : this(new LiveMany<ISqlParams>(array))
     { }
     
-    public RecordsOf(IEnumerator<ISqlParamsOf> src) : base(() => src, false)
+    public RecordsOf(IEnumerator<ISqlParams> src) : base(() => src, false)
     { }
     
-    public RecordsOf(IEnumerable<ISqlParamsOf> src) : base(
+    public RecordsOf(IEnumerable<ISqlParams> src) : base(
         () => src.GetEnumerator(),
         false
     )

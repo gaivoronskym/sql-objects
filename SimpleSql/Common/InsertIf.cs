@@ -2,12 +2,12 @@
 
 namespace SimpleSql.Common;
 
-public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlParamsOf> records, IQuery query) : IQuery
+public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlParams> records, IQuery query) : IQuery
 {
 
     #region func
 
-    public InsertIf(Func<bool> func, string table, IEnumerable<ISqlParamsOf> records)
+    public InsertIf(Func<bool> func, string table, IEnumerable<ISqlParams> records)
         : this(func, table, records, new RawSql(""))
     {
 
@@ -89,13 +89,13 @@ public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlPara
 
     }
 
-    public InsertIf(Func<bool> func, string table, ISqlParamsOf sqlparams, IQuery query)
+    public InsertIf(Func<bool> func, string table, ISqlParams sqlparams, IQuery query)
         : this(func, table, new RecordsOf(sqlparams), query)
     {
 
     }
 
-    public InsertIf(Func<bool> func, string table, ISqlParamsOf sqlparams)
+    public InsertIf(Func<bool> func, string table, ISqlParams sqlparams)
         : this(func, table, new RecordsOf(sqlparams), new RawSql(""))
     {
 
@@ -105,7 +105,7 @@ public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlPara
 
     #region Condition
 
-    public InsertIf(bool condition, string table, IEnumerable<ISqlParamsOf> records)
+    public InsertIf(bool condition, string table, IEnumerable<ISqlParams> records)
         : this(() => condition, table, records, new RawSql(""))
     {
 
@@ -187,13 +187,13 @@ public sealed class InsertIf(Func<bool> func, string table, IEnumerable<ISqlPara
 
     }
 
-    public InsertIf(bool condition, string table, ISqlParamsOf sqlparams, IQuery query)
+    public InsertIf(bool condition, string table, ISqlParams sqlparams, IQuery query)
         : this(() => condition, table, new RecordsOf(sqlparams), query)
     {
 
     }
 
-    public InsertIf(bool condition, string table, ISqlParamsOf sqlparams)
+    public InsertIf(bool condition, string table, ISqlParams sqlparams)
         : this(() => condition, table, new RecordsOf(sqlparams), new RawSql(""))
     {
 

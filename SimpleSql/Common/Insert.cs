@@ -3,9 +3,9 @@ using Yaapii.Atoms.Text;
 
 namespace SimpleSql.Common;
 
-public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQuery query) : IQuery
+public sealed class Insert(string table, IEnumerable<ISqlParams> records, IQuery query) : IQuery
 {
-    public Insert(string table, IEnumerable<ISqlParamsOf> records)
+    public Insert(string table, IEnumerable<ISqlParams> records)
         : this(table, records, new RawSql(""))
     {
 
@@ -83,13 +83,13 @@ public sealed class Insert(string table, IEnumerable<ISqlParamsOf> records, IQue
 
     }
 
-    public Insert(string table, ISqlParamsOf sqlParams, IQuery query)
+    public Insert(string table, ISqlParams sqlParams, IQuery query)
         : this(table, new RecordsOf(sqlParams), query)
     {
 
     }
 
-    public Insert(string table, ISqlParamsOf sqlParams)
+    public Insert(string table, ISqlParams sqlParams)
         : this(table, new RecordsOf(sqlParams), new RawSql(""))
     {
 

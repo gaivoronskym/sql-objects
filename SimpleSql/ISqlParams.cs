@@ -2,7 +2,7 @@
 
 namespace SimpleSql;
 
-public interface ISqlParamsOf : IEnumerable<ISqlParam>
+public interface ISqlParams : IEnumerable<ISqlParam>
 {
     
 }

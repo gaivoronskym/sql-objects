@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql", "SimpleSql\SimpleSql.csproj", "{E90CB1B8-8462-4CF0-8FF8-F4827FFF4411}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElegantSql", "ElegantSql\ElegantSql.csproj", "{E90CB1B8-8462-4CF0-8FF8-F4827FFF4411}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql.Sample", "SimpleSql.Sample\SimpleSql.Sample.csproj", "{7519A5C7-585B-4A98-88A7-6C77B5E8212A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElegantSql.Sample", "ElegantSql.Sample\ElegantSql.Sample.csproj", "{7519A5C7-585B-4A98-88A7-6C77B5E8212A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSql.Tests", "SimpleSql.Tests\SimpleSql.Tests.csproj", "{CAFCC49F-FEE0-4802-A750-15AF0534E94F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elegant.Tests", "Elegant.Tests\Elegant.Tests.csproj", "{CAFCC49F-FEE0-4802-A750-15AF0534E94F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

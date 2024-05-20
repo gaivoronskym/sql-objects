@@ -1,0 +1,28 @@
+﻿using ElegantSql.Common;
+
+namespace Elegant.Tests.Common;
+
+public class ConditionTest
+{
+    [Fact]
+    public void ActEqual()
+    {
+        string expected = "[Id] = 1";
+
+        Assert.Equal(
+            expected,
+            new ExpressionOf("[Id]", 1).Raw()
+        );
+    }
+    
+    [Fact]
+    public void ActGreaterThan()
+    {
+        string expected = "[Id] > 1";
+
+        Assert.Equal(
+            expected,
+            new ExpressionOf("[Id]", ">", 1).Raw()
+        );
+    }
+}

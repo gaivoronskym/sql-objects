@@ -9,15 +9,13 @@ namespace ElegantSql.Common;
 /// <param name="queries"></param>
 public sealed class Brackets(params IQuery[] queries) : IQuery
 {
-    private readonly IEnumerable<IQuery> _queries = queries;
-
     public string Raw()
     {
         return new Joined(
             Environment.NewLine,
             true,
             new TextOf("("),
-            new Joined(Environment.NewLine, _queries.Select(q => q.Raw()), true),
+            new Joined(Environment.NewLine, queries.Select(q => q.Raw()), true),
             new TextOf(")")
         ).AsString();
     }

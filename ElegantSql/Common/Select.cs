@@ -9,17 +9,35 @@ namespace ElegantSql.Common;
 /// <param name="table">name of table</param>
 /// <param name="columns">list of columns</param>
 /// <param name="queries">expressions</param>
-public sealed class Select(string table, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
+public sealed class Select(string table, IQuery limit, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
     : IQuery
 {
+    public Select(string table, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
+        : this(table, new IQuery.None(), columns, queries)
+    {
+        
+    }
+    
+    public Select(string table, IQuery limit, params IQuery[] columns)
+        : this(table, limit, columns, new List<IQuery>())
+    {
+        
+    }
+    
+    public Select(string table, IQuery limit, IEnumerable<IQuery> columns)
+        : this(table, limit, columns, new List<IQuery>())
+    {
+        
+    }
+    
     public Select(string table, params IQuery[] columns)
-        : this(table, columns, new List<IQuery>())
+        : this(table, new IQuery.None(), columns, new List<IQuery>())
     {
         
     }
     
     public Select(string table, IEnumerable<IQuery> columns)
-        : this(table, columns, new List<IQuery>())
+        : this(table, new IQuery.None(), columns, new List<IQuery>())
     {
         
     }
@@ -31,8 +49,18 @@ public sealed class Select(string table, IEnumerable<IQuery> columns, IEnumerabl
             new Joined(
                 Environment.NewLine,
                 true,
-                new TextOf("SELECT"),
-                new Joined(", ", columns.Select(f => f.Raw()), true),
+                new Formatted(
+                    "{0}{1}",
+                    new TextOf("SELECT"),
+                    new TextIf(
+                        () => !string.IsNullOrEmpty(limit.Raw()),
+                        new Formatted(
+                            " {0}",
+                            new TextOf(limit.Raw)
+                        )
+                    )
+                ),
+                new Joined(", ", columns.Select(f => f.Raw())),
                 new Formatted("FROM {0}", table)
             ),
             new TextIf(

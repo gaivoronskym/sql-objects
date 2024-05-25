@@ -9,6 +9,29 @@ namespace Elegant.Tests.Common;
 public class SelectTest
 {
     [Fact]
+    public void TestSelectFirst()
+    {
+        string expected = new Joined(
+            Environment.NewLine,
+            "SELECT TOP(1)",
+            "[Id], [Name]",
+            "FROM [Items];"
+        ).AsString();
+
+        Assert.Equal(
+            expected,
+            new Select(
+                "[Items]",
+                new Top(1),
+                new Columns(
+                    "[Id]",
+                    "[Name]"
+                )
+            ).Raw()
+        );
+    }
+    
+    [Fact]
     public void MakeSimpleSelect()
     {
         string expected = new Joined(

@@ -7,4 +7,12 @@ public interface IQuery
     /// </summary>
     /// <returns>String of SQL Query </returns>
     string Raw();
+
+    public sealed class None : IQuery
+    {
+        public string Raw()
+        {
+            return string.Empty;
+        }
+    }
 }

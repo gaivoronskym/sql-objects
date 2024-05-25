@@ -12,7 +12,7 @@ public sealed class Top(int rows) : IQuery
     public string Raw()
     {
         return new Formatted(
-            "TOP {0}",
+            "TOP({0})",
             rows
         ).AsString();
     }

@@ -2,6 +2,7 @@
 using SqlObjects.Common;
 using SqlObjects.Interfaces;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Func;
 
 namespace SqlObjects.Servers.SqlServer;
 
@@ -12,7 +13,8 @@ namespace SqlObjects.Servers.SqlServer;
 /// <param name="func"></param>
 /// <param name="fallback"></param>
 /// <param name="isolationLevel"></param>
-public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback, IQuery isolationLevel)
+public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback,
+        IQuery isolationLevel)
     : AsyncTxnEnvelop<T>(connection,
         func,
         fallback,
@@ -47,10 +49,22 @@ public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func,
     /// <param name="connection"></param>
     /// <param name="func"></param>
     /// <param name="fallback"></param>
-    public class ReadCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(connection,
+    public class ReadCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
+        connection,
         func,
         fallback,
-        new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"));
+        new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
+    {
+        public ReadCommitted(IDbConnection connection, Func<Task<T>> func, Func<T> fallback)
+            : this(
+                connection,
+                new FuncOf<Task<T>>(func),
+                new FuncOf<T>(fallback)
+            )
+        {
+
+        }
+    }
 
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
@@ -58,8 +72,20 @@ public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func,
     /// <param name="connection"></param>
     /// <param name="func"></param>
     /// <param name="fallback"></param>
-    public class ReadUnCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(connection,
+    public class ReadUnCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
+        connection,
         func,
         fallback,
-        new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"));
+        new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
+    {
+        public ReadUnCommitted(IDbConnection connection, Func<Task<T>> func, Func<T> fallback)
+            : this(
+                connection,
+                new FuncOf<Task<T>>(func),
+                new FuncOf<T>(fallback)
+            )
+        {
+
+        }
+    }
 }

@@ -51,7 +51,18 @@ public abstract class Txn<T>(IDbConnection connection, IFunc<T> func, IFunc<T> f
     public class ReadCommitted(IDbConnection connection, IFunc<T> func, IFunc<T> fallback) : Txn<T>(connection,
         func,
         fallback,
-        new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"));
+        new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
+    {
+        public ReadCommitted(IDbConnection connection, Func<T> func, Func<T> fallback)
+            : this(
+                connection,
+                new FuncOf<T>(func),
+                new FuncOf<T>(fallback)
+            )
+        {
+
+        }
+    }
 
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
@@ -62,5 +73,16 @@ public abstract class Txn<T>(IDbConnection connection, IFunc<T> func, IFunc<T> f
     public class ReadUnCommitted(IDbConnection connection, IFunc<T> func, IFunc<T> fallback) : Txn<T>(connection,
         func,
         fallback,
-        new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"));
+        new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
+    {
+        public ReadUnCommitted(IDbConnection connection, Func<T> func, Func<T> fallback)
+            : this(
+                connection,
+                new FuncOf<T>(func),
+                new FuncOf<T>(fallback)
+            )
+        {
+
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using SqlObjects.Interfaces;
 
-namespace ElegantSql.Sample.Schema;
+namespace SqlObjects.Sample.Schema;
 
 public interface IDboItems : ITable
 {

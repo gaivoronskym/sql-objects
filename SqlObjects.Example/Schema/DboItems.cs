@@ -1,6 +1,6 @@
 ﻿using SqlObjects.Schema;
 
-namespace ElegantSql.Sample.Schema;
+namespace SqlObjects.Sample.Schema;
 
 public sealed class DboItems(string schema, string alias) : Table(schema, alias, "[Id]", "[Items]"), IDboItems
 {

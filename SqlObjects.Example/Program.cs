@@ -1,9 +1,8 @@
 ﻿using System.Data.SqlClient;
-using ElegantSql.Sample.Schema;
-using SqlObjects;
 using SqlObjects.Common;
+using SqlObjects.Sample.Schema;
 
-namespace ElegantSql.Sample
+namespace SqlObjects.Sample
 {
     internal class Program
     {

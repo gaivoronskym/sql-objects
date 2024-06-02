@@ -11,9 +11,7 @@ public class NotInTest
     {
         string expected = new Joined(
             Environment.NewLine,
-            "[Id] NOT IN (",
-            "1,2,3,4,5",
-            ")"
+            "[Id] NOT IN (1,2,3,4,5)"
         ).AsString();
 
         Assert.Equal(

@@ -18,7 +18,7 @@ public class BracketsTest
         Assert.Equal(
             expected,
             new Brackets(
-                new ExpressionOf("[Id]", 5)
+                new Expression("[Id]", 5)
             ).Raw()
         );
     }

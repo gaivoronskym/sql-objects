@@ -14,28 +14,25 @@ public sealed class In(IQuery expression, IQuery values) : IQuery
     public In(string field, IEnumerable<int> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlIntOf(v)))
+            new Many(values.Select(v => new SqlIntOf(v)))
         )
     {
-
     }
     
     public In(string field, IEnumerable<long> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlBigintOf(v)))
+            new Many(values.Select(v => new SqlBigintOf(v)))
         )
     {
-
     }
     
     public In(string field, IEnumerable<string> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlStringOf(v)))
+            new Many(values.Select(v => new SqlStringOf(v)))
         )
     {
-
     }
 
     public string Raw()

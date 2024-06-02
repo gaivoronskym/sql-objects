@@ -11,7 +11,7 @@ public class SumOfTest
 
         Assert.Equal(
             expected,
-            new SumOf(
+            new Sum(
                 "[Amount]"
             ).Raw()
         );
@@ -24,7 +24,7 @@ public class SumOfTest
 
         Assert.Equal(
             expected,
-            new SumOf(
+            new Sum(
                 "[Amount]",
                 "[Total]"
             ).Raw()

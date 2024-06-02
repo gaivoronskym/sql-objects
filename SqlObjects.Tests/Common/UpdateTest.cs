@@ -14,7 +14,7 @@ public class UpdateTest
             expected,
             new Update(
                 "[Books]",
-                new SqlParamsOf(
+                new Record(
                     new SqlParam(
                         "[AuthorId]",
                         5
@@ -33,7 +33,7 @@ public class UpdateTest
             expected,
             new Update(
                 "[Books]",
-                new SqlParamsOf(
+                new Record(
                     new SqlParam(
                         "[AuthorId]",
                         5
@@ -45,7 +45,7 @@ public class UpdateTest
                 ),
                 new Queries(
                     new Where(
-                        new ExpressionOf(
+                        new Expression(
                             "[Id]",
                             100
                         )

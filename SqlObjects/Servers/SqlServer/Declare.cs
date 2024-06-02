@@ -8,7 +8,7 @@ namespace SqlObjects.Servers.SqlServer;
 /// </summary>
 /// <param name="name">name of object</param>
 /// <param name="type">type of object</param>
-public sealed class DeclareOf(string name, string type) : IQuery
+public sealed class Declare(string name, string type) : IQuery
 {
     public string Raw()
     {

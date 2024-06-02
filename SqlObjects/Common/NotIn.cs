@@ -14,7 +14,7 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
     public NotIn(string field, IEnumerable<int> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlIntOf(v)))
+            new Many(values.Select(v => new SqlIntOf(v)))
         )
     {
 
@@ -23,7 +23,7 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
     public NotIn(string field, IEnumerable<long> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlBigintOf(v)))
+            new Many(values.Select(v => new SqlBigintOf(v)))
         )
     {
 
@@ -32,7 +32,7 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
     public NotIn(string field, IEnumerable<string> values)
         : this(
             new RawSql(field),
-            new SqlCollection(values.Select(v => new SqlStringOf(v)))
+            new Many(values.Select(v => new SqlStringOf(v)))
         )
     {
 

@@ -1,5 +1,5 @@
-﻿using SqlObjects;
-using SqlObjects.Common;
+﻿using SqlObjects.Common;
+using SqlObjects.Interfaces;
 using SqlObjects.Servers.SqlServer;
 using Yaapii.Atoms.List;
 using Joined = Yaapii.Atoms.Text.Joined;
@@ -13,7 +13,8 @@ public class InsertTest
     {
         string expected = new Joined(
             Environment.NewLine,
-            "INSERT INTO [Items] ([Name], [Cost])",
+            "INSERT INTO [Items]",
+            "([Name], [Cost])",
             "VALUES",
             "('Apple iPhone', 1000.0);"
         ).AsString();
@@ -23,7 +24,7 @@ public class InsertTest
             expected,
             new Insert(
                 "[Items]",
-                new SqlParamsOf(
+                new Record(
                     new SqlParam(
                         "[Name]", "Apple iPhone"
                     ),
@@ -40,9 +41,10 @@ public class InsertTest
     {
         string expected = new Joined(
             Environment.NewLine,
-            "INSERT INTO [Items] ([Name], [Cost])",
+            "INSERT INTO [Items]",
+            "([Name], [Cost])",
             "VALUES",
-            "('Apple iPhone', 1000.0);",
+            "('Apple iPhone', 1000.0)",
             "SELECT scope_identity() as Id;"
         ).AsString();
 
@@ -51,15 +53,19 @@ public class InsertTest
             expected,
             new Insert(
                 "[Items]",
-                new SqlParamsOf(
-                    new SqlParam(
-                        "[Name]", "Apple iPhone"
+                new Queries(
+                    new Records(
+                        new Record(
+                            new SqlParam(
+                                "[Name]", "Apple iPhone"
+                            ),
+                            new SqlParam(
+                                "[Cost]", 1000.0m
+                            )
+                        )
                     ),
-                    new SqlParam(
-                        "[Cost]", 1000.0m
-                    )
-                ),
-                new ScopeIdentity()
+                    new ScopeIdentity()
+                )
             ).Raw()
         );
     }
@@ -69,7 +75,8 @@ public class InsertTest
     {
         string expected = new Joined(
             Environment.NewLine,
-            "INSERT INTO [Items] ([Name], [Cost])",
+            "INSERT INTO [Items]",
+            "([Name], [Cost])",
             "VALUES",
             "('Apple iPhone', 1000.0),",
             "('Samsung Galaxy S', 990.0);"
@@ -80,21 +87,25 @@ public class InsertTest
             expected,
             new Insert(
                 "[Items]",
-                new RecordsOf(
-                    new SqlParamsOf(
-                        new SqlParam(
-                            "[Name]", "Apple iPhone"
-                        ),
-                        new SqlParam(
-                            "[Cost]", 1000.0m
-                        )
-                    ),
-                    new SqlParamsOf(
-                        new SqlParam(
-                            "[Name]", "Samsung Galaxy S"
-                        ),
-                        new SqlParam(
-                            "[Cost]", 990.0m
+                new Queries(
+                    new Records(
+                        new ListOf<IRecord>(
+                            new Record(
+                                new SqlParam(
+                                    "[Name]", "Apple iPhone"
+                                ),
+                                new SqlParam(
+                                    "[Cost]", 1000.0m
+                                )
+                            ),
+                            new Record(
+                                new SqlParam(
+                                    "[Name]", "Samsung Galaxy S"
+                                ),
+                                new SqlParam(
+                                    "[Cost]", 990.0m
+                                )
+                            )
                         )
                     )
                 )
@@ -107,7 +118,8 @@ public class InsertTest
     {
         string expected = new Joined(
             Environment.NewLine,
-            "INSERT INTO @ids ([Id])",
+            "INSERT INTO @ids",
+            "([Id])",
             "VALUES",
             "(1),",
             "(2),",

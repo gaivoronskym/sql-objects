@@ -12,7 +12,8 @@ public class QueryIfTest
         string expected = new Joined(
             Environment.NewLine,
             "SELECT",
-            "[Id], [Name]",
+            "[Id],",
+            "[Name]",
             "FROM [Items];"
         ).AsString();
 
@@ -22,7 +23,7 @@ public class QueryIfTest
                 true,
                 new Select(
                     "[Items]",
-                    new Columns(
+                    new Strings(
                         "[Id]",
                         "[Name]"
                     )
@@ -30,7 +31,7 @@ public class QueryIfTest
             ).Raw()
         );
     }
-    
+
     [Fact]
     public void TestIfConditionIsFalse()
     {
@@ -47,7 +48,7 @@ public class QueryIfTest
                 false,
                 new Select(
                     "[Items]",
-                    new Columns(
+                    new Strings(
                         "[Id]",
                         "[Name]"
                     )
@@ -55,14 +56,15 @@ public class QueryIfTest
             ).Raw()
         );
     }
-    
+
     [Fact]
     public void TestFuncCondition()
     {
         string expected = new Joined(
             Environment.NewLine,
             "SELECT",
-            "[Id], [Name]",
+            "[Id],",
+            "[Name]",
             "FROM [Items];"
         ).AsString();
 
@@ -72,7 +74,7 @@ public class QueryIfTest
                 () => true,
                 new Select(
                     "[Items]",
-                    new Columns(
+                    new Strings(
                         "[Id]",
                         "[Name]"
                     )

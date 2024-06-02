@@ -12,7 +12,7 @@ public class OrTest
         Assert.Equal(
             expected,
             new Or(
-                new ExpressionOf("[Id]", 1)
+                new Expression("[Id]", 1)
             ).Raw()
         );
     }
@@ -25,7 +25,7 @@ public class OrTest
         Assert.Equal(
             expected,
             new Or(
-                new ExpressionOf("[Id]", ">", 1)
+                new Expression("[Id]", ">", 1)
             ).Raw()
         );
     }

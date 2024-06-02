@@ -1,75 +1,71 @@
 ﻿using SqlObjects.Interfaces;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Text;
+using Joined = Yaapii.Atoms.Text.Joined;
 
 namespace SqlObjects.Common;
 
 /// <summary>
 /// Select query
 /// </summary>
-/// <param name="table">name of table</param>
-/// <param name="columns">list of columns</param>
 /// <param name="queries">expressions</param>
-public sealed class Select(string table, IQuery limit, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
+public sealed class Select(IEnumerable<IQuery> queries)
     : IQuery
 {
-    public Select(string table, IEnumerable<IQuery> columns, IEnumerable<IQuery> queries)
-        : this(table, new IQuery.None(), columns, queries)
+    public Select(string table, IEnumerable<IQuery> columns, params IQuery[] queries)
+        : this(
+            new Joined<IQuery>(
+                new Queries(
+                    new Columns(columns),
+                    new From(table)
+                ),
+                queries
+            )
+        )
     {
-        
     }
-    
-    public Select(string table, IQuery limit, params IQuery[] columns)
-        : this(table, limit, columns, new List<IQuery>())
+
+    public Select(string table, IEnumerable<string> columns, params IQuery[] queries)
+        : this(
+            new Joined<IQuery>(
+                new Queries(
+                    new Columns(columns),
+                    new From(table)
+                ),
+                queries
+            )
+        )
     {
-        
     }
-    
-    public Select(string table, IQuery limit, IEnumerable<IQuery> columns)
-        : this(table, limit, columns, new List<IQuery>())
-    {
-        
-    }
-    
-    public Select(string table, params IQuery[] columns)
-        : this(table, new IQuery.None(), columns, new List<IQuery>())
-    {
-        
-    }
-    
+
     public Select(string table, IEnumerable<IQuery> columns)
-        : this(table, new IQuery.None(), columns, new List<IQuery>())
+        : this(
+            new Queries(
+                new Columns(columns),
+                new From(table)
+            )
+        )
     {
-        
     }
-    
+
+    public Select(string table, params string[] columns)
+        : this(
+            new Queries(
+                new Columns(columns),
+                new From(table)
+            )
+        )
+    {
+    }
+
     public string Raw()
     {
         return new Formatted(
-            "{0}{1};",
+            "{0}\r\n{1};",
+            new TextOf("SELECT"),
             new Joined(
-                Environment.NewLine,
-                true,
-                new Formatted(
-                    "{0}{1}",
-                    new TextOf("SELECT"),
-                    new TextIf(
-                        () => !string.IsNullOrEmpty(limit.Raw()),
-                        new Formatted(
-                            " {0}",
-                            new TextOf(limit.Raw)
-                        )
-                    )
-                ),
-                new Joined(", ", columns.Select(f => f.Raw())),
-                new Formatted("FROM {0}", table)
-            ),
-            new TextIf(
-                queries.Any(),
-                new Formatted(
-                    "{0}{1}",
-                    new TextOf(Environment.NewLine),
-                    new Joined(Environment.NewLine, queries.Select(q => q.Raw()))
-                )
+                "\r\n",
+                queries.Select(q => q.Raw())
             )
         ).AsString();
     }

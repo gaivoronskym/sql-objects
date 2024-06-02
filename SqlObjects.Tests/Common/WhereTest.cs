@@ -12,7 +12,7 @@ public class WhereTest
         Assert.Equal(
             expected,
             new Where(
-                new ExpressionOf("[Id]", 1)
+                new Expression("[Id]", 1)
             ).Raw()
         );
     }
@@ -25,7 +25,7 @@ public class WhereTest
         Assert.Equal(
             expected,
             new Where(
-                new ExpressionOf("[Id]", ">", 1)
+                new Expression("[Id]", ">", 1)
             ).Raw()
         );
     }

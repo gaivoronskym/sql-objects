@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using SqlObjects.Common;
 using SqlObjects.Sample.Schema;
+using Yaapii.Atoms.List;
 
 namespace SqlObjects.Sample
 {
@@ -8,34 +9,26 @@ namespace SqlObjects.Sample
     {
         static async Task Main(string[] args)
         {
-            var connection = new SqlConnection(
-                @""
-            );
-            connection.Open();
-
             var dboItems = new DboItems("item");
             var sql = new LoggingQuery(
                 new Select(
                     dboItems.TableName(),
-                    new Columns(
+                    new ListOf<string>(
                         dboItems.Id(),
                         dboItems.Name(),
                         dboItems.Cost(),
                         dboItems.Price()
                     ),
-                    new Queries(
-                        new Where(
-                            new ExpressionOf(
-                                dboItems.Id(),
-                                5
-                            )
+                    new Where(
+                        new Expression(
+                            dboItems.Id(),
+                            5
                         )
                     )
                 )
             ).Raw();
             
-            connection.Close();
-            
+            Console.WriteLine(sql);
             Console.ReadKey();
         }
     }

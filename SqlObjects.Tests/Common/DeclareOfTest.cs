@@ -11,7 +11,7 @@ public class DeclareOfTest
 
         Assert.Equal(
             expected,
-            new DeclareOf(
+            new Declare(
                 "name",
                 "NVARCHAR(30)"
             ).Raw()

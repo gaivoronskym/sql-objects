@@ -11,7 +11,7 @@ public class ConditionTest
 
         Assert.Equal(
             expected,
-            new ExpressionOf("[Id]", 1).Raw()
+            new Expression("[Id]", 1).Raw()
         );
     }
     
@@ -22,7 +22,7 @@ public class ConditionTest
 
         Assert.Equal(
             expected,
-            new ExpressionOf("[Id]", ">", 1).Raw()
+            new Expression("[Id]", ">", 1).Raw()
         );
     }
 }

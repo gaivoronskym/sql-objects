@@ -27,7 +27,7 @@ public class LeftJoinTest
                 "_item.[Id]",
                 "_inventory.[ItemId]",
                 new And(
-                    new ExpressionOf("_inventory.[Quantity]", ">", 0)
+                    new Expression("_inventory.[Quantity]", ">", 0)
                 )
             ).Raw()
         );

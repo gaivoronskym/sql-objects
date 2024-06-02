@@ -7,7 +7,7 @@ namespace SqlObjects.Common;
 /// Query wrapper
 /// </summary>
 /// <param name="queries">list of queries</param>
-public sealed class QueryOf(params IQuery[] queries) : IQuery
+public sealed class QueryOf(IEnumerable<IQuery> queries) : IQuery
 {
     public string Raw()
     {

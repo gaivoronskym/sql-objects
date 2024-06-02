@@ -10,21 +10,21 @@ namespace SqlObjects.Servers.SqlServer;
 /// <param name="expression">SQL expression</param>
 /// <param name="separator">separator</param>
 /// <param name="alias">alias</param>
-public sealed class StringAggOf(IQuery expression, string separator, string alias) : IQuery
+public sealed class StringAgg(IQuery expression, string separator, string alias) : IQuery
 {
-    public StringAggOf(string expression, string separator)
+    public StringAgg(string expression, string separator)
         : this(expression, separator, string.Empty)
     {
         
     }
     
-    public StringAggOf(string expression, string separator, string alias)
+    public StringAgg(string expression, string separator, string alias)
         : this(new RawSql(expression), separator, alias)
     {
         
     }
 
-    public StringAggOf(IQuery expression, string separator)
+    public StringAgg(IQuery expression, string separator)
         : this(expression, separator, string.Empty)
     {
         

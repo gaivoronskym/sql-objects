@@ -14,7 +14,7 @@ public class DeleteTest
             new Delete(
                 "[Books]",
                 new Where(
-                    new ExpressionOf(
+                    new Expression(
                         "[Id]",
                         1000
                     )

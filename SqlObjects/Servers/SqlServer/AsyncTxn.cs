@@ -3,6 +3,7 @@ using SqlObjects.Common;
 using SqlObjects.Interfaces;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Func;
+using Yaapii.Atoms.List;
 
 namespace SqlObjects.Servers.SqlServer;
 
@@ -29,13 +30,11 @@ public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func,
             Connection,
             new Select(
                 "sys.sysprocesses",
-                new Queries(
+                new ListOf<IQuery>(
                     new RawSql("COUNT(*)")
                 ),
-                new Queries(
-                    new Where(
-                        new ExpressionOf("open_tran", true)
-                    )
+                new Where(
+                    new Expression("open_tran", true)
                 )
             )
         ).InvokeAsync();

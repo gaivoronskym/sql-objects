@@ -11,7 +11,7 @@ public class SetOfTest
 
         Assert.Equal(
             expected,
-            new SetOf(
+            new Set(
                 "name",
                 "John"
             ).Raw()
@@ -25,7 +25,7 @@ public class SetOfTest
 
         Assert.Equal(
             expected,
-            new SetOf(
+            new Set(
                 "age",
                 5
             ).Raw()

@@ -12,7 +12,7 @@ public class AndTest
         Assert.Equal(
             expected,
             new And(
-                new ExpressionOf("[Id]", 1)
+                new Expression("[Id]", 1)
             ).Raw()
         );
     }
@@ -25,7 +25,7 @@ public class AndTest
         Assert.Equal(
             expected,
             new And(
-                new ExpressionOf("[Id]", ">", 1)
+                new Expression("[Id]", ">", 1)
             ).Raw()
         );
     }

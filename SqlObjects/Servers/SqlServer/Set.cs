@@ -9,33 +9,33 @@ namespace SqlObjects.Servers.SqlServer;
 /// </summary>
 /// <param name="name"></param>
 /// <param name="expression"></param>
-public sealed class SetOf(string name, IQuery expression) : IQuery
+public sealed class Set(string name, IQuery expression) : IQuery
 {
-    public SetOf(string name, bool value)
+    public Set(string name, bool value)
         :  this(name, new SqlBoolOf(value))
     {
         
     }
     
-    public SetOf(string name, DateTime value)
+    public Set(string name, DateTime value)
         :  this(name, new SqlDatetimeOf(value))
     {
         
     }
     
-    public SetOf(string name, int value)
+    public Set(string name, int value)
         :  this(name, new SqlIntOf(value))
     {
         
     }
     
-    public SetOf(string name, long value)
+    public Set(string name, long value)
         :  this(name, new SqlBigintOf(value))
     {
         
     }
     
-    public SetOf(string name, string value)
+    public Set(string name, string value)
         :  this(name, new SqlStringOf(value))
     {
         

@@ -7,22 +7,22 @@ namespace SqlObjects.Common;
 /// </summary>
 /// <param name="query">expression</param>
 /// <param name="alias">alias</param>
-public sealed class SumOf(IQuery query, string alias) : IQuery
+public sealed class Sum(IQuery query, string alias) : IQuery
 {
 
-    public SumOf(IQuery query)
+    public Sum(IQuery query)
         : this(query, string.Empty)
     {
         
     }
 
-    public SumOf(string query)
+    public Sum(string query)
         : this(query, string.Empty)
     {
         
     }
     
-    public SumOf(string query, string alias)
+    public Sum(string query, string alias)
         : this(new RawSql(query), alias)
     {
         

@@ -6,11 +6,15 @@ SQL Objects is a powerful SQL query builder written in C#.
 
 ```c#
 new Select(
-    "[Products]",
-    new Columns(
-        "[Id]",
-        "[Name]",
-        "[Cost]"
+    new Queries(
+        new Top(1),
+        new Columns(
+            new Strings(
+                "[Id]",
+                "[Name]"
+            )
+        ),
+        new From("[Products]")
     )
 )
 ```
@@ -18,14 +22,17 @@ new Select(
 ```c#
 new Select(
     "[Products]",
-    new Columns(
+    new ListOf<string>(
         "[Id]",
         "[Name]",
-        "[Cost]"
+        "[Description]",
+        "[Cost]",
+        "[Price]"
     ),
-    new Queries(
-        new Where(
-            new ExpressionOf("[Id]", 99)
+    new Where(
+        new Expression(
+            "[Id]",
+            5
         )
     )
 )
@@ -36,11 +43,18 @@ new Select(
 ```c#
 new Insert(
     "[Products]",
-    new RecordsOf(
-        new SqlParamsOf(
-            new SqlParam("[Name]", "Computer Mouse"),
-            new SqlParam("[Cost]", 99.99m)
-        )
+    new Queries(
+        new Records(
+            new Record(
+                new SqlParam(
+                    "[Name]", "Computer mouse"
+                ),
+                new SqlParam(
+                    "[Cost]", 1000.0m
+                )
+            )
+        ),
+        new ScopeIdentity()
     )
 )
 ```
@@ -71,23 +85,14 @@ new Delete(
 
 ```c#
 new Select(
-    "[Products]",
-    new Columns(
-        new StringsOf(
-            "[Products].[Id]",
-            "[Products].[Name]",
-            "[Products].[Cost]"
-        ),
-        new SumOf("[Inventories].[Quantity]", "[Quantity]")
-    ),
+    "[Products] _product",
     new Queries(
-        new LeftJoin("[Inventories]", "[Inventories].[ProductId]", "[Products].[Id]"),
-        new GroupBy(
-            "[Products].[Id]",
-            "[Products].[Name]",
-            "[Products].[Cost]"
-        )
-    )
+        new RawSql("_product.[Id]"),
+        new RawSql("_product.[Name]"),
+        new Sum("_inventory.[Quantity]", "[Quantity]")
+    ),
+    new LeftJoin("[Inventory] _inventory", "_product.[Id]", "_inventory.[ProductId]"),
+    new GroupBy("_product.[Id], _product.[Name]")
 )
 ```
 

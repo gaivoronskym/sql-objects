@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using SqlObjects.Common;
+﻿using SqlObjects.Common;
 using SqlObjects.Sample.Schema;
 using Yaapii.Atoms.List;
 

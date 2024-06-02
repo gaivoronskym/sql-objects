@@ -13,7 +13,6 @@ public sealed class Like(IQuery first, IQuery second) : IQuery
     public Like(string field, string query)
         : this(new RawSql(field), new RawSql(query))
     {
-        
     }
 
     public string Raw()

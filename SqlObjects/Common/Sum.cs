@@ -13,19 +13,16 @@ public sealed class Sum(IQuery query, string alias) : IQuery
     public Sum(IQuery query)
         : this(query, string.Empty)
     {
-        
     }
 
     public Sum(string query)
         : this(query, string.Empty)
     {
-        
     }
     
     public Sum(string query, string alias)
         : this(new RawSql(query), alias)
     {
-        
     }
 
     public string Raw()

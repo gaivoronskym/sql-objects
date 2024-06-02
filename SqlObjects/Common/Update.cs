@@ -17,7 +17,6 @@ public sealed class Update(string table, IEnumerable<ISqlParam> @params, IEnumer
     public Update(string table, IEnumerable<ISqlParam> sqlParams)
         : this(table, sqlParams, new ListOf<IQuery>())
     {
-        
     }
     
     public string Raw()

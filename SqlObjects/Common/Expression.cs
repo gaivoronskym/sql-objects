@@ -12,112 +12,94 @@ namespace SqlObjects.Common;
 /// <param name="second">second expression</param>
 public sealed class Expression(IQuery first, string operation, IQuery second) : IQuery
 {
-    public Expression(IQuery first, IQuery value)
-        : this(first, "=", value)
+    public Expression(IQuery first, IQuery second)
+        : this(first, "=", second)
     {
-
     }
 
-    public Expression(string field, string operation, IQuery second)
-        : this(new RawSql(field), operation, second)
+    public Expression(string first, string operation, IQuery second)
+        : this(new RawSql(first), operation, second)
     {
-        
     }
     
-    public Expression(string field, IQuery value)
-        : this(new RawSql(field), "=", value)
+    public Expression(string first, IQuery second)
+        : this(new RawSql(first), "=", second)
     {
-
     }
 
-    public Expression(string field, long value)
-        : this(field, new SqlBigintOf(value))
+    public Expression(string first, long second)
+        : this(first, new SqlBigintOf(second))
     {
-        
     }
     
-    public Expression(string field, int value)
-        : this(field, new SqlIntOf(value))
+    public Expression(string first, int second)
+        : this(first, new SqlIntOf(second))
     {
-        
     }
     
-    public Expression(string field, string value)
-        : this(field, new SqlStringOf(value))
+    public Expression(string first, string second)
+        : this(first, new SqlStringOf(second))
     {
-        
     }
     
-    public Expression(string field, decimal value)
-        : this(field, new SqlDecimalOf(value))
+    public Expression(string first, decimal second)
+        : this(first, new SqlDecimalOf(second))
     {
-        
     }
     
-    public Expression(string field, bool value)
-        : this(field, new SqlBoolOf(value))
+    public Expression(string first, bool second)
+        : this(first, new SqlBoolOf(second))
     {
-        
     }
     
-    public Expression(string field, string operation, long value)
-        : this(field, operation, new SqlBigintOf(value))
+    public Expression(string first, string operation, long second)
+        : this(first, operation, new SqlBigintOf(second))
     {
-        
     }
     
-    public Expression(string field, string operation, int value)
-        : this(field, operation, new SqlIntOf(value))
+    public Expression(string first, string operation, int second)
+        : this(first, operation, new SqlIntOf(second))
     {
-        
     }
     
-    public Expression(string field, string operation, decimal value)
-        : this(field, operation, new SqlDecimalOf(value))
+    public Expression(string first, string operation, decimal second)
+        : this(first, operation, new SqlDecimalOf(second))
     {
-        
     }
     
-    public Expression(string field, string operation, string value)
-        : this(field, operation, new SqlStringOf(value))
+    public Expression(string field, string operation, string second)
+        : this(field, operation, new SqlStringOf(second))
     {
-        
     }
     
-    public Expression(string field, string operation, bool value)
-        : this(field, operation, new SqlBoolOf(value))
+    public Expression(string field, string operation, bool second)
+        : this(field, operation, new SqlBoolOf(second))
     {
-        
     }
     
-    public Expression(IQuery first, string operation, long value)
-        : this(first, operation, new SqlBigintOf(value))
+    public Expression(IQuery first, string operation, long second)
+        : this(first, operation, new SqlBigintOf(second))
     {
-        
     }
     
-    public Expression(IQuery first, string operation, int value)
-        : this(first, operation, new SqlIntOf(value))
+    public Expression(IQuery first, string operation, int second)
+        : this(first, operation, new SqlIntOf(second))
     {
-        
     }
     
-    public Expression(IQuery first, string operation, decimal value)
-        : this(first, operation, new SqlDecimalOf(value))
+    public Expression(IQuery first, string operation, decimal second)
+        : this(first, operation, new SqlDecimalOf(second))
     {
-        
     }
     
-    public Expression(IQuery first, string operation, string value)
-        : this(first, operation, new SqlStringOf(value))
+    public Expression(IQuery first, string operation, string second)
+        : this(first, operation, new SqlStringOf(second))
     {
-        
     }
     
-    public Expression(IQuery first, string operation, bool value)
-        : this(first, operation, new SqlBoolOf(value))
+    public Expression(IQuery first, string operation, bool second)
+        : this(first, operation, new SqlBoolOf(second))
     {
-        
     }
 
     public string Raw()

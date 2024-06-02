@@ -16,6 +16,5 @@ public sealed class LeftJoin(string table, string first, string second, IQuery q
     public LeftJoin(string table, string first, string second, string operation = "=")
         : this(table, first, second, new RawSql(new Blank()), operation)
     {
-        
     }
 }

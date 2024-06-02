@@ -44,7 +44,7 @@ public class ProcedureOfTest
                         "[Id]",
                         new ListOf<long>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
                     ),
-                    new ProcedureOf(
+                    new Procedure(
                         "[SearchItems]",
                         new Record(
                             new SqlParam("ids", new RawSql("@ids")),

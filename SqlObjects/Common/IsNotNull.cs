@@ -13,7 +13,6 @@ public sealed class IsNotNull(IQuery expression) : IQuery
     public IsNotNull(string expression)
         : this(new RawSql(expression))
     {
-        
     }
 
     public string Raw()

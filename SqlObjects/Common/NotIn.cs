@@ -17,7 +17,6 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
             new Many(values.Select(v => new SqlIntOf(v)))
         )
     {
-
     }
     
     public NotIn(string field, IEnumerable<long> values)
@@ -26,7 +25,6 @@ public sealed class NotIn(IQuery field, IQuery query) : IQuery
             new Many(values.Select(v => new SqlBigintOf(v)))
         )
     {
-
     }
     
     public NotIn(string field, IEnumerable<string> values)

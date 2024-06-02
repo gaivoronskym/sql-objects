@@ -8,22 +8,21 @@ namespace SqlObjects.Common;
 /// </summary>
 /// <param name="query"></param>
 /// <param name="alias"></param>
-public sealed class AvgOf(IQuery query, string alias) : IQuery
+public sealed class Avg(IQuery query, string alias) : IQuery
 {
-
-    public AvgOf(IQuery query)
+    public Avg(IQuery query)
         : this(query, string.Empty)
     {
         
     }
 
-    public AvgOf(string query)
+    public Avg(string query)
         : this(query, string.Empty)
     {
         
     }
     
-    public AvgOf(string query, string alias)
+    public Avg(string query, string alias)
         : this(new RawSql(query), alias)
     {
         

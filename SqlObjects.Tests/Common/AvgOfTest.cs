@@ -11,7 +11,7 @@ public class AvgOfTest
 
         Assert.Equal(
             expected,
-            new AvgOf(
+            new Avg(
                 "[Amount]"
             ).Raw()
         );
@@ -24,7 +24,7 @@ public class AvgOfTest
 
         Assert.Equal(
             expected,
-            new AvgOf(
+            new Avg(
                 "[Amount]",
                 "[AvgAmount]"
             ).Raw()

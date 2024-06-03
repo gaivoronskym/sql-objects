@@ -61,7 +61,7 @@ public sealed class Select(IEnumerable<IQuery> queries)
     public string Raw()
     {
         return new Formatted(
-            "{0}\r\n{1};",
+            "{0}\r\n{1}",
             new TextOf("SELECT"),
             new Joined(
                 "\r\n",

@@ -14,6 +14,12 @@ namespace SqlObjects.Common;
 public sealed class Update(string table, IEnumerable<ISqlParam> @params, IEnumerable<IQuery> queries)
     : IQuery
 {
+    public Update(string table, IEnumerable<ISqlParam> @params, IQuery query)
+        : this(table, @params, new Queries(query))
+    {
+        
+    }
+    
     public Update(string table, IEnumerable<ISqlParam> sqlParams)
         : this(table, sqlParams, new ListOf<IQuery>())
     {

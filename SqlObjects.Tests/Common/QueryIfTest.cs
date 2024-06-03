@@ -14,7 +14,7 @@ public class QueryIfTest
             "SELECT",
             "[Id],",
             "[Name]",
-            "FROM [Items];"
+            "FROM [Items]"
         ).AsString();
 
         Assert.Equal(
@@ -65,7 +65,7 @@ public class QueryIfTest
             "SELECT",
             "[Id],",
             "[Name]",
-            "FROM [Items];"
+            "FROM [Items]"
         ).AsString();
 
         Assert.Equal(

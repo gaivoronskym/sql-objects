@@ -16,7 +16,7 @@ public class SelectTest
             "TOP(1)",
             "[Id],",
             "[Name]",
-            "FROM [Items];"
+            "FROM [Items]"
         ).AsString();
 
         Assert.Equal(
@@ -44,7 +44,7 @@ public class SelectTest
             "SELECT",
             "[Id],",
             "[Name]",
-            "FROM [Items];"
+            "FROM [Items]"
         ).AsString();
 
         Assert.Equal(
@@ -75,7 +75,7 @@ public class SelectTest
                 "SUM(_inventory.[Quantity]) AS [Quantity]",
                 "FROM [Items] _item",
                 "LEFT JOIN [Inventory] _inventory ON _item.[Id] = _inventory.[ItemId]",
-                "GROUP BY _item.[Id], _item.[Name];"
+                "GROUP BY _item.[Id], _item.[Name]"
             )
         ).AsString();
 

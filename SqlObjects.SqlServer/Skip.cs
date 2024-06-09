@@ -1,7 +1,7 @@
 ﻿using SqlObjects.Interfaces;
 using Yaapii.Atoms.Text;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// OFFSET [...] ROWS query

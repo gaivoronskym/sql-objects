@@ -1,5 +1,4 @@
-﻿using SqlObjects;
-using SqlObjects.Common;
+﻿using SqlObjects.Common;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.Tests.Common;
@@ -22,11 +21,11 @@ public class QueryIfTest
             new QueryIf(
                 true,
                 new Select(
-                    "[Items]",
                     new Strings(
                         "[Id]",
                         "[Name]"
-                    )
+                    ),
+                    "[Items]"
                 )
             ).Raw()
         );
@@ -47,11 +46,11 @@ public class QueryIfTest
             new QueryIf(
                 false,
                 new Select(
-                    "[Items]",
                     new Strings(
                         "[Id]",
                         "[Name]"
-                    )
+                    ),
+                    "[Items]"
                 )
             ).Raw()
         );
@@ -73,11 +72,11 @@ public class QueryIfTest
             new QueryIf(
                 () => true,
                 new Select(
-                    "[Items]",
                     new Strings(
                         "[Id]",
                         "[Name]"
-                    )
+                    ),
+                    "[Items]"
                 )
             ).Raw()
         );

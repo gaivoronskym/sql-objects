@@ -2,7 +2,7 @@
 using SqlObjects.Types;
 using Yaapii.Atoms.Text;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// STRING_AGG function

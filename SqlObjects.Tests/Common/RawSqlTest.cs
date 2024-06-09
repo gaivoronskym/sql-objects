@@ -1,6 +1,4 @@
-﻿using SqlObjects;
-
-namespace SqlObjects.Tests.Common;
+﻿namespace SqlObjects.Tests.Common;
 
 public class RawSqlTest
 {

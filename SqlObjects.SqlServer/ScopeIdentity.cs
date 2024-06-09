@@ -1,6 +1,6 @@
 ﻿using SqlObjects.Interfaces;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// SCOPE_IDENTITY() function

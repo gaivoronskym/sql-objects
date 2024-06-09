@@ -20,6 +20,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <ProjectReference Include="..\SqlObjects.SqlServer\SqlObjects.SqlServer.csproj" />
         <ProjectReference Include="..\SqlObjects\SqlObjects.csproj" />
     </ItemGroup>
 

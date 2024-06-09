@@ -1,6 +1,5 @@
-﻿using SqlObjects;
-using SqlObjects.Common;
-using SqlObjects.Servers.SqlServer;
+﻿using SqlObjects.Common;
+using SqlObjects.SqlServer;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.Tests.Common;
@@ -82,12 +81,12 @@ public class SelectTest
         Assert.Equal(
             expected,
             new Select(
-                "[Items] _item",
                 new Queries(
                     new RawSql("_item.[Id]"),
                     new RawSql("_item.[Name]"),
                     new Sum("_inventory.[Quantity]", "[Quantity]")
                 ),
+                "[Items] _item",
                 new LeftJoin("[Inventory] _inventory", "_item.[Id]", "_inventory.[ItemId]"),
                 new GroupBy("_item.[Id], _item.[Name]")
             ).Raw()

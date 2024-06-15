@@ -5,19 +5,18 @@ using Yaapii.Atoms;
 using Yaapii.Atoms.Func;
 using Yaapii.Atoms.List;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// Runs SQL query in transaction
 /// </summary>
-/// <param name="connection"></param>
+/// <param name="conn"></param>
 /// <param name="func"></param>
-/// <param name="fallback"></param>
 /// <param name="isolationLevel"></param>
-public abstract class Txn<T>(IDbConnection connection, IFunc<T> func, IFunc<T> fallback, IQuery isolationLevel)
-    : TxnEnvelop<T>(connection,
+public abstract class Txn<T>(IDbConnection conn, IFunc<T> func, IQuery isolationLevel)
+    : TxnEnvelop<T>(
+        conn,
         func,
-        fallback,
         isolationLevel,
         new RawSql("BEGIN TRANSACTION;"),
         new RawSql("COMMIT TRANSACTION;"),
@@ -26,15 +25,13 @@ public abstract class Txn<T>(IDbConnection connection, IFunc<T> func, IFunc<T> f
     protected override bool HasTransaction()
     {
         var openedTransactions = new Execution<int>(
-            Connection,
+            Conn,
             new Select(
-                "sys.sysprocesses",
                 new ListOf<IQuery>(
                     new RawSql("COUNT(*)")
                 ),
-                new Where(
-                    new Expression("open_tran", true)
-                )
+                "sys.sysprocesses",
+                new Where("open_tran", true)
             )
         ).Invoke();
 
@@ -44,44 +41,57 @@ public abstract class Txn<T>(IDbConnection connection, IFunc<T> func, IFunc<T> f
     /// <summary>
     /// Transaction with READ COMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="connection"></param>
+    /// <param name="conn"></param>
     /// <param name="func"></param>
-    /// <param name="fallback"></param>
-    public class ReadCommitted(IDbConnection connection, IFunc<T> func, IFunc<T> fallback) : Txn<T>(connection,
+    public sealed class ReadCommitted(IDbConnection conn, IFunc<T> func) : Txn<T>(
+        conn,
         func,
-        fallback,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
     {
-        public ReadCommitted(IDbConnection connection, Func<T> func, Func<T> fallback)
+        public ReadCommitted(IDbConnection conn, Func<T> func)
             : this(
-                connection,
-                new FuncOf<T>(func),
-                new FuncOf<T>(fallback)
+                conn,
+                new FuncOf<T>(func)
             )
         {
-
         }
     }
 
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="connection"></param>
+    /// <param name="conn"></param>
     /// <param name="func"></param>
-    /// <param name="fallback"></param>
-    public class ReadUnCommitted(IDbConnection connection, IFunc<T> func, IFunc<T> fallback) : Txn<T>(connection,
+    public sealed class ReadUnCommitted(IDbConnection conn, IFunc<T> func) : Txn<T>(
+        conn,
         func,
-        fallback,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
     {
-        public ReadUnCommitted(IDbConnection connection, Func<T> func, Func<T> fallback)
+        public ReadUnCommitted(IDbConnection conn, Func<T> func)
             : this(
-                connection,
-                new FuncOf<T>(func),
-                new FuncOf<T>(fallback)
+                conn,
+                new FuncOf<T>(func)
             )
         {
+        }
+    }
 
+    /// <summary>
+    /// Transaction with SERIALIZABLE ISOLATION LEVEL
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <param name="func"></param>
+    public sealed class Serializable(IDbConnection conn, IFunc<T> func) : Txn<T>(
+        conn,
+        func,
+        new RawSql("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;"))
+    {
+        public Serializable(IDbConnection conn, Func<T> func)
+            : this(
+                conn,
+                new FuncOf<T>(func)
+            )
+        {
         }
     }
 }

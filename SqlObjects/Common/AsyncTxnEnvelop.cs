@@ -4,44 +4,41 @@ using Yaapii.Atoms;
 
 namespace SqlObjects.Common;
 
-public abstract class AsyncTxnEnvelop<T>(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback, IQuery isolationLevel, IQuery begin,
+public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IFunc<Task<T>> func, IQuery isolationLevel, IQuery begin,
         IQuery commit, IQuery rollback)
     : IAsyncTxn<T>
 {
-    protected readonly IDbConnection Connection = connection;
+    protected readonly IDbConnection Conn = conn;
 
     public async Task<T> Invoke()
     {
         try
         {
             await BeginAsync();
-
             var res = await func.Invoke();
-
             await CommitAsync();
-
             return res;
         }
         catch (Exception e)
         {
             await RollbackAsync();
             Console.WriteLine(e);
-            return fallback.Invoke();
+            throw;
         }
     }
 
     protected abstract Task<bool> HasTransactionAsync();
 
-    private async Task BeginAsync()
+    private Task BeginAsync()
     {
-        await new AsyncExecution<int>(
-            Connection,
-            isolationLevel
-        ).InvokeAsync();
-
-        await new AsyncExecution<int>(
-            Connection,
-            begin
+        return new AsyncExecution(
+            Conn,
+            new QueryOf(
+                new Queries(
+                    isolationLevel,
+                    begin
+                )
+            )
         ).InvokeAsync();
     }
 
@@ -49,8 +46,8 @@ public abstract class AsyncTxnEnvelop<T>(IDbConnection connection, IFunc<Task<T>
     {
         if (await HasTransactionAsync())
         {
-            await new AsyncExecution<int>(
-                Connection,
+            await new AsyncExecution(
+                Conn,
                 commit
             ).InvokeAsync();
         }
@@ -60,8 +57,8 @@ public abstract class AsyncTxnEnvelop<T>(IDbConnection connection, IFunc<Task<T>
     {
         if (await HasTransactionAsync())
         {
-            await new AsyncExecution<int>(
-                Connection,
+            await new AsyncExecution(
+                Conn,
                 rollback
             ).InvokeAsync();
         }

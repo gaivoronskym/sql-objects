@@ -1,4 +1,4 @@
-﻿using SqlObjects.Servers.SqlServer;
+﻿using SqlObjects.SqlServer;
 
 namespace SqlObjects.Tests.Common;
 

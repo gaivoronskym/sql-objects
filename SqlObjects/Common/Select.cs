@@ -12,12 +12,12 @@ namespace SqlObjects.Common;
 public sealed class Select(IEnumerable<IQuery> queries)
     : IQuery
 {
-    public Select(string table, IEnumerable<IQuery> columns, params IQuery[] queries)
+    public Select(IEnumerable<IQuery> columns, string from, params IQuery[] queries)
         : this(
             new Joined<IQuery>(
                 new Queries(
                     new Columns(columns),
-                    new From(table)
+                    new From(from)
                 ),
                 queries
             )
@@ -25,12 +25,12 @@ public sealed class Select(IEnumerable<IQuery> queries)
     {
     }
 
-    public Select(string table, IEnumerable<string> columns, params IQuery[] queries)
+    public Select(IEnumerable<string> columns, string from,  params IQuery[] queries)
         : this(
             new Joined<IQuery>(
                 new Queries(
                     new Columns(columns),
-                    new From(table)
+                    new From(from)
                 ),
                 queries
             )
@@ -38,21 +38,11 @@ public sealed class Select(IEnumerable<IQuery> queries)
     {
     }
 
-    public Select(string table, IEnumerable<IQuery> columns)
+    public Select(IEnumerable<IQuery> columns, string from)
         : this(
             new Queries(
                 new Columns(columns),
-                new From(table)
-            )
-        )
-    {
-    }
-
-    public Select(string table, params string[] columns)
-        : this(
-            new Queries(
-                new Columns(columns),
-                new From(table)
+                new From(from)
             )
         )
     {

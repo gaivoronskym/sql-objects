@@ -1,7 +1,7 @@
 ﻿using SqlObjects.Interfaces;
 using Yaapii.Atoms.Text;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 public abstract class OrderBy(IEnumerable<IQuery> queries, string type) : IQuery
 {

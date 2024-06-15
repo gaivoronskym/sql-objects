@@ -5,20 +5,19 @@ using Yaapii.Atoms;
 using Yaapii.Atoms.Func;
 using Yaapii.Atoms.List;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// Asynchronously runs SQL query in transaction
 /// </summary>
-/// <param name="connection"></param>
+/// <param name="conn"></param>
 /// <param name="func"></param>
 /// <param name="fallback"></param>
 /// <param name="isolationLevel"></param>
-public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback,
+public abstract class AsyncTxn<T>(IDbConnection conn, IFunc<Task<T>> func, IFunc<T> fallback,
         IQuery isolationLevel)
-    : AsyncTxnEnvelop<T>(connection,
+    : AsyncTxnEnvelop<T>(conn,
         func,
-        fallback,
         isolationLevel,
         new RawSql("BEGIN TRANSACTION;"),
         new RawSql("COMMIT TRANSACTION;"),
@@ -27,15 +26,13 @@ public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func,
     protected override async Task<bool> HasTransactionAsync()
     {
         var openedTransactions = await new AsyncExecution<int>(
-            Connection,
+            Conn,
             new Select(
-                "sys.sysprocesses",
                 new ListOf<IQuery>(
                     new RawSql("COUNT(*)")
                 ),
-                new Where(
-                    new Expression("open_tran", true)
-                )
+                "sys.sysprocesses",
+                new Where("open_tran", true)
             )
         ).InvokeAsync();
 
@@ -45,46 +42,66 @@ public abstract class AsyncTxn<T>(IDbConnection connection, IFunc<Task<T>> func,
     /// <summary>
     /// Transaction with READ COMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="connection"></param>
+    /// <param name="conn"></param>
     /// <param name="func"></param>
     /// <param name="fallback"></param>
-    public class ReadCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
-        connection,
+    public sealed class ReadCommitted(IDbConnection conn, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
+        conn,
         func,
         fallback,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
     {
-        public ReadCommitted(IDbConnection connection, Func<Task<T>> func, Func<T> fallback)
+        public ReadCommitted(IDbConnection conn, Func<Task<T>> func, Func<T> fallback)
             : this(
-                connection,
+                conn,
                 new FuncOf<Task<T>>(func),
                 new FuncOf<T>(fallback)
             )
         {
-
         }
     }
 
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="connection"></param>
+    /// <param name="conn"></param>
     /// <param name="func"></param>
     /// <param name="fallback"></param>
-    public class ReadUnCommitted(IDbConnection connection, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
-        connection,
+    public sealed class ReadUnCommitted(IDbConnection conn, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
+        conn,
         func,
         fallback,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
     {
-        public ReadUnCommitted(IDbConnection connection, Func<Task<T>> func, Func<T> fallback)
+        public ReadUnCommitted(IDbConnection conn, Func<Task<T>> func, Func<T> fallback)
             : this(
-                connection,
+                conn,
                 new FuncOf<Task<T>>(func),
                 new FuncOf<T>(fallback)
             )
         {
+        }
+    }
 
+    /// <summary>
+    /// Transaction with SERIALIZABLE ISOLATION LEVEL
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <param name="func"></param>
+    /// <param name="fallback"></param>
+    public sealed class Serializable(IDbConnection conn, IFunc<Task<T>> func, IFunc<T> fallback) : AsyncTxn<T>(
+        conn,
+        func,
+        fallback,
+        new RawSql("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;"))
+    {
+        public Serializable(IDbConnection conn, Func<Task<T>> func, Func<T> fallback)
+            : this(
+                conn,
+                new FuncOf<Task<T>>(func),
+                new FuncOf<T>(fallback)
+            )
+        {
         }
     }
 }

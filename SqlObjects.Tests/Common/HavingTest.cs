@@ -1,6 +1,5 @@
-﻿using SqlObjects;
-using SqlObjects.Common;
-using SqlObjects.Servers.SqlServer;
+﻿using SqlObjects.Common;
+using SqlObjects.SqlServer;
 
 namespace SqlObjects.Tests.Common;
 

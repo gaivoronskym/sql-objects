@@ -1,7 +1,7 @@
 ﻿using SqlObjects.Interfaces;
 using Yaapii.Atoms.Text;
 
-namespace SqlObjects.Servers.SqlServer;
+namespace SqlObjects.SqlServer;
 
 /// <summary>
 /// Common table expression WITH [name_of_expression] AS (...)

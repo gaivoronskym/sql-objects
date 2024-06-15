@@ -7,36 +7,32 @@ namespace SqlObjects.Common;
 /// <summary>
 /// Transaction wrapper
 /// </summary>
-/// <param name="connection">database connection</param>
+/// <param name="conn">database connection</param>
 /// <param name="func">action to execute</param>
-/// <param name="fallback"></param>
 /// <param name="isolationLevel"></param>
 /// <param name="begin"></param>
 /// <param name="commit"></param>
 /// <param name="rollback"></param>
-public abstract class TxnEnvelop<T>(IDbConnection connection, IFunc<T> func, IFunc<T> fallback, IQuery isolationLevel, IQuery begin,
+public abstract class TxnEnvelop<T>(IDbConnection conn, IFunc<T> func, IQuery isolationLevel, IQuery begin,
         IQuery commit, IQuery rollback)
     : ITxn<T>
 {
-    protected readonly IDbConnection Connection = connection;
+    protected readonly IDbConnection Conn = conn;
 
     public T Invoke()
     {
         try
         {
             Begin();
-        
             var res = func.Invoke();
-        
             Commit();
-
             return res;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             Rollback();
-            Console.WriteLine(e);
-            return fallback.Invoke();
+            Console.WriteLine(ex);
+            throw;
         }
     }
 
@@ -44,14 +40,14 @@ public abstract class TxnEnvelop<T>(IDbConnection connection, IFunc<T> func, IFu
 
     private void Begin()
     {
-        new Execution<int>(
-            Connection,
-            isolationLevel
-        ).Invoke();
-        
-        new Execution<int>(
-            Connection,
-            begin
+        new Execution(
+            Conn,
+            new QueryOf(
+                new Queries(
+                    isolationLevel,
+                    begin
+                )
+            )
         ).Invoke();
     }
     
@@ -59,8 +55,8 @@ public abstract class TxnEnvelop<T>(IDbConnection connection, IFunc<T> func, IFu
     {
         if (HasTransaction())
         {
-            new Execution<int>(
-                Connection,
+            new Execution(
+                Conn,
                 commit
             ).Invoke();
         }
@@ -70,8 +66,8 @@ public abstract class TxnEnvelop<T>(IDbConnection connection, IFunc<T> func, IFu
     {
         if (HasTransaction())
         {
-            new Execution<int>(
-                Connection,
+            new Execution(
+                Conn,
                 rollback
             ).Invoke();
         }

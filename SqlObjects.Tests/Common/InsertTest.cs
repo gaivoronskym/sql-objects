@@ -1,6 +1,6 @@
 ﻿using SqlObjects.Common;
 using SqlObjects.Interfaces;
-using SqlObjects.Servers.SqlServer;
+using SqlObjects.SqlServer;
 using Yaapii.Atoms.List;
 using Joined = Yaapii.Atoms.Text.Joined;
 

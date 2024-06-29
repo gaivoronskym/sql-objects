@@ -3,7 +3,6 @@ using SqlObjects.Text;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Text;
-using Joined = Yaapii.Atoms.Text.Joined;
 
 namespace SqlObjects.Common;
 

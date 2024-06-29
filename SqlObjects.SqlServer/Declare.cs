@@ -1,4 +1,4 @@
-﻿using SqlObjects.Interfaces;
+﻿using SqlObjects.Common;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.SqlServer;
@@ -8,14 +8,10 @@ namespace SqlObjects.SqlServer;
 /// </summary>
 /// <param name="name">name of object</param>
 /// <param name="type">type of object</param>
-public sealed class Declare(string name, string type) : IQuery
-{
-    public string Raw()
-    {
-        return new Formatted(
-            "DECLARE @{0} {1};",
-            name,
-            type
-        ).AsString();
-    }
-}
+public sealed class Declare(string name, string type) : QueryEnvelope(
+    new Formatted(
+        "DECLARE @{0} {1};",
+        name,
+        type
+    )
+);

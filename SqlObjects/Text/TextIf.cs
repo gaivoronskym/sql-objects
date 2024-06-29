@@ -2,7 +2,7 @@
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
-namespace SqlObjects;
+namespace SqlObjects.Text;
 
 public class TextIf(IScalar<bool> scalar, IText first, IText second) : IText
 {

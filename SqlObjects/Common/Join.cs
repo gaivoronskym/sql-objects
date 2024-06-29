@@ -1,4 +1,6 @@
 ﻿using SqlObjects.Interfaces;
+using SqlObjects.Scalar;
+using SqlObjects.Text;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.Common;
@@ -8,8 +10,6 @@ public abstract class Join(string table, string first, string second, string typ
 {
     public string Raw()
     {
-        var queryRaw = query.Raw();
-
         return new Joined(
             "",
             new Formatted(
@@ -21,11 +21,11 @@ public abstract class Join(string table, string first, string second, string typ
                 second
             ),
             new TextIf(
-                !string.IsNullOrEmpty(queryRaw),
+                new StringFilled(query.Raw),
                 new Formatted(
                     "{0}{1}",
                     Environment.NewLine,
-                    queryRaw
+                    query.Raw()
                 )
             )
         ).AsString();

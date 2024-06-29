@@ -13,12 +13,7 @@ public class DeleteTest
             expected,
             new Delete(
                 "[Books]",
-                new Where(
-                    new Expression(
-                        "[Id]",
-                        1000
-                    )
-                )
+                new Where("[Id]", 1000)
             ).Raw()
         );
     }

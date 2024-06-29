@@ -1,4 +1,5 @@
 ﻿using SqlObjects.Interfaces;
+using SqlObjects.Text;
 using Yaapii.Atoms;
 using Yaapii.Atoms.List;
 using Yaapii.Atoms.Text;
@@ -10,7 +11,26 @@ namespace SqlObjects.Common;
 /// Insert Into [Table_Name] ([]...[]) VALUES(...)
 /// </summary>
 /// <param name="table"></param>
-public sealed class Insert(string table, IEnumerable<IQuery> queries) : IQuery
+public sealed class Insert(string table, IEnumerable<IQuery> queries) : QueryEnvelope(
+    new TextWithSemicolon(
+        new JoinedViaEol(
+            new Joined<IText>(
+                new ListOf<IText>(
+                    new Formatted(
+                        "INSERT INTO {0}",
+                        table
+                    )
+                ),
+                new Mapped<IQuery, IText>(
+                    query => new TextOf(
+                        query.Raw
+                    ),
+                    queries
+                )
+            )
+        )
+    )
+)
 {
     public Insert(string table, string column, IEnumerable<long> values)
         : this(
@@ -87,27 +107,5 @@ public sealed class Insert(string table, IEnumerable<IQuery> queries) : IQuery
             )
         )
     {
-    }
-    
-    public string Raw()
-    {
-        return new Formatted(
-            "{0};",
-            new Joined(
-                "\r\n",
-                new Joined<IText>(
-                    new ListOf<IText>(
-                        new Formatted(
-                            "INSERT INTO {0}",
-                            table
-                        )
-                    ),
-                    new Mapped<IQuery, IText>(
-                        query => new TextOf(query.Raw),
-                        queries
-                    )
-                )
-            )
-        ).AsString();
     }
 }

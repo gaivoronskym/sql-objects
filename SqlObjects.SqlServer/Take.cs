@@ -1,4 +1,4 @@
-﻿using SqlObjects.Interfaces;
+﻿using SqlObjects.Common;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.SqlServer;
@@ -7,13 +7,9 @@ namespace SqlObjects.SqlServer;
 /// FETCH NEXT [...] ROWS ONLY query
 /// </summary>
 /// <param name="rows"></param>
-public sealed class Take(int rows) : IQuery
-{
-    public string Raw()
-    {
-        return new Formatted(
-            "FETCH NEXT {0} ROWS ONLY",
-            rows
-        ).AsString();
-    }
-}
+public sealed class Take(int rows) : QueryEnvelope(
+    new Formatted(
+        "FETCH NEXT {0} ROWS ONLY",
+        rows
+    )
+);

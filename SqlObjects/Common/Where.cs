@@ -8,7 +8,12 @@ namespace SqlObjects.Common;
 /// WHERE query
 /// </summary>
 /// <param name="query">expression</param>
-public sealed class Where(IQuery query) : IQuery
+public sealed class Where(IQuery query) : QueryEnvelope(
+    new Formatted(
+        "WHERE {0}",
+        query.Raw()
+    )
+)
 {
     public Where(string first, string operation, string second)
         : this(new RawSql(first), operation, new RawSql(second))
@@ -73,13 +78,5 @@ public sealed class Where(IQuery query) : IQuery
     public Where(IQuery first, string operation, IQuery second)
         : this(new Expression(first, operation, second))
     {
-    }
-    
-    public string Raw()
-    {
-        return new Formatted(
-            "WHERE {0}",
-            query.Raw()
-        ).AsString();
     }
 }

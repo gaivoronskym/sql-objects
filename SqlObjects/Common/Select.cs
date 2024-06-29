@@ -1,4 +1,6 @@
 ﻿using SqlObjects.Interfaces;
+using SqlObjects.Text;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Text;
 using Joined = Yaapii.Atoms.Text.Joined;
@@ -9,8 +11,20 @@ namespace SqlObjects.Common;
 /// Select query
 /// </summary>
 /// <param name="queries">expressions</param>
-public sealed class Select(IEnumerable<IQuery> queries)
-    : IQuery
+public sealed class Select(IEnumerable<IQuery> queries) : QueryEnvelope(
+    new Formatted(
+        "{0}{1}",
+        new TextWithEol(
+            new TextOf("SELECT")
+        ),
+        new JoinedViaEol(
+            new Mapped<IQuery, IText>(
+                (query) => new TextOf(query.Raw),
+                queries
+            )
+        )
+    )
+)
 {
     public Select(IEnumerable<IQuery> columns, string from, params IQuery[] queries)
         : this(
@@ -25,7 +39,7 @@ public sealed class Select(IEnumerable<IQuery> queries)
     {
     }
 
-    public Select(IEnumerable<string> columns, string from,  params IQuery[] queries)
+    public Select(IEnumerable<string> columns, string from, params IQuery[] queries)
         : this(
             new Joined<IQuery>(
                 new Queries(
@@ -46,17 +60,5 @@ public sealed class Select(IEnumerable<IQuery> queries)
             )
         )
     {
-    }
-
-    public string Raw()
-    {
-        return new Formatted(
-            "{0}\r\n{1}",
-            new TextOf("SELECT"),
-            new Joined(
-                "\r\n",
-                queries.Select(q => q.Raw())
-            )
-        ).AsString();
     }
 }

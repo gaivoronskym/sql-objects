@@ -9,7 +9,13 @@ namespace SqlObjects.Common;
 /// </summary>
 /// <param name="expression">SQL expression</param>
 /// <param name="values">list of values</param>
-public sealed class In(IQuery expression, IQuery values) : IQuery
+public sealed class In(IQuery expression, IQuery values) : QueryEnvelope(
+    new Formatted(
+        "{0} IN {1}",
+        expression.Raw(),
+        values.Raw()
+    )
+)
 {
     public In(string field, IEnumerable<int> values)
         : this(
@@ -33,14 +39,5 @@ public sealed class In(IQuery expression, IQuery values) : IQuery
             new Many(values.Select(v => new SqlStringOf(v)))
         )
     {
-    }
-
-    public string Raw()
-    {
-        return new Formatted(
-            "{0} IN {1}",
-            expression.Raw(),
-            values.Raw()
-        ).AsString();
     }
 }

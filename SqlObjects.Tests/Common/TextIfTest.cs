@@ -1,4 +1,5 @@
-﻿using Yaapii.Atoms.Text;
+﻿using SqlObjects.Text;
+using Yaapii.Atoms.Text;
 
 namespace SqlObjects.Tests.Common;
 

@@ -1,4 +1,4 @@
-﻿using SqlObjects.Interfaces;
+﻿using SqlObjects.Common;
 using Yaapii.Atoms.Text;
 
 namespace SqlObjects.SqlServer;
@@ -7,13 +7,9 @@ namespace SqlObjects.SqlServer;
 /// OFFSET [...] ROWS query
 /// </summary>
 /// <param name="rows"></param>
-public sealed class Skip(int rows) : IQuery
-{
-    public string Raw()
-    {
-        return new Formatted(
-            "OFFSET {0} ROWS",
-            rows
-        ).AsString();
-    }
-}
+public sealed class Skip(int rows) : QueryEnvelope(
+    new Formatted(
+        "OFFSET {0} ROWS",
+        rows
+    )
+);

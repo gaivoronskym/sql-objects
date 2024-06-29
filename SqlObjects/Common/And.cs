@@ -8,7 +8,12 @@ namespace SqlObjects.Common;
 /// AND query
 /// </summary>
 /// <param name="query">expression</param>
-public sealed class And(IQuery query) : IQuery
+public sealed class And(IQuery query) : QueryEnvelope(
+    new Formatted(
+        "AND {0}",
+        query.Raw()
+    )
+)
 {
     public And(string first, string operation, string second)
         : this(new RawSql(first), operation, new RawSql(second))
@@ -73,13 +78,5 @@ public sealed class And(IQuery query) : IQuery
     public And(IQuery first, string operation, IQuery second)
         : this(new Expression(first, operation, second))
     {
-    }
-    
-    public string Raw()
-    {
-        return new Formatted(
-            "AND {0}",
-            query.Raw()
-        ).AsString();
     }
 }

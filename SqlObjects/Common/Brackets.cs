@@ -1,5 +1,7 @@
 ﻿using SqlObjects.Interfaces;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Text;
+using Joined = Yaapii.Atoms.Text.Joined;
 
 namespace SqlObjects.Common;
 
@@ -7,16 +9,18 @@ namespace SqlObjects.Common;
 /// Brackets
 /// </summary>
 /// <param name="queries"></param>
-public sealed class Brackets(params IQuery[] queries) : IQuery
-{
-    public string Raw()
-    {
-        return new Joined(
+public sealed class Brackets(params IQuery[] queries) : QueryEnvelope(
+    new Joined(
+        Environment.NewLine,
+        true,
+        new TextOf("("),
+        new Joined(
             Environment.NewLine,
-            true,
-            new TextOf("("),
-            new Joined(Environment.NewLine, queries.Select(q => q.Raw()), true),
-            new TextOf(")")
-        ).AsString();
-    }
-}
+            new Mapped<IQuery, string>(
+                (query) => query.Raw(),
+                queries
+            )
+        ),
+        new TextOf(")")
+    )
+);

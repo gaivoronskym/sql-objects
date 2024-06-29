@@ -11,7 +11,7 @@ namespace SqlObjects.Common;
 /// <param name="second">second expression</param>
 /// <param name="query">sub query</param>
 /// <param name="operation">boolean operation</param>
-public sealed class LeftJoin(string table, string first, string second, IQuery query, string operation = "=") : Join(table, first, second, "LEFT", query, operation)
+public sealed class LeftJoin(string table, string first, string second, IQuery query, string operation = "=") : Join(table, first, second, "LEFT", new StickyQuery(query), operation)
 {
     public LeftJoin(string table, string first, string second, string operation = "=")
         : this(table, first, second, new RawSql(new Blank()), operation)

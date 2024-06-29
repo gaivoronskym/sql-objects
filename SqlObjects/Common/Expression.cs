@@ -10,7 +10,15 @@ namespace SqlObjects.Common;
 /// <param name="first">first expression</param>
 /// <param name="operation">boolean operation</param>
 /// <param name="second">second expression</param>
-public sealed class Expression(IQuery first, string operation, IQuery second) : IQuery
+public sealed class Expression(IQuery first, string operation, IQuery second) : QueryEnvelope(
+    new Formatted(
+        "{0} {1} {2}",
+        true,
+        new TextOf(first.Raw()),
+        new TextOf(operation),
+        new TextOf(second.Raw())
+    )
+)
 {
     public Expression(IQuery first, IQuery second)
         : this(first, "=", second)
@@ -100,16 +108,5 @@ public sealed class Expression(IQuery first, string operation, IQuery second) : 
     public Expression(IQuery first, string operation, bool second)
         : this(first, operation, new SqlBoolOf(second))
     {
-    }
-
-    public string Raw()
-    {
-        return new Formatted(
-            "{0} {1} {2}",
-            true,
-            new TextOf(first.Raw()),
-            new TextOf(operation),
-            new TextOf(second.Raw())
-        ).AsString();
     }
 }

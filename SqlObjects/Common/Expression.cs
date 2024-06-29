@@ -13,7 +13,7 @@ namespace SqlObjects.Common;
 public sealed class Expression(IQuery first, string operation, IQuery second) : QueryEnvelope(
     new Formatted(
         "{0} {1} {2}",
-        true,
+        false,
         new TextOf(first.Raw()),
         new TextOf(operation),
         new TextOf(second.Raw())

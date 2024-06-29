@@ -3,12 +3,12 @@ using Yaapii.Atoms.Text;
 
 namespace SqlObjects.Text;
 
-public sealed class JoinedViaEol : TextEnvelope
+public sealed class JoinedViaBlank : TextEnvelope
 {
-    public JoinedViaEol(IEnumerable<IText> texts)
+    public JoinedViaBlank(IEnumerable<IText> texts)
         : this(
             new Joined(
-                "\r\n",
+                "",
                 texts
             ),
             false
@@ -16,10 +16,10 @@ public sealed class JoinedViaEol : TextEnvelope
     {
     }
     
-    public JoinedViaEol(params IText[] texts)
+    public JoinedViaBlank(params IText[] texts)
         : this(
             new Joined(
-                "\r\n",
+                "",
                 texts
             ),
             false
@@ -27,10 +27,10 @@ public sealed class JoinedViaEol : TextEnvelope
     {
     }
     
-    public JoinedViaEol(IEnumerable<string> str)
+    public JoinedViaBlank(IEnumerable<string> str)
         : this(
             new Joined(
-                "\r\n",
+                "",
                 str
             ),
             false
@@ -38,18 +38,18 @@ public sealed class JoinedViaEol : TextEnvelope
     {
     }
 
-    public JoinedViaEol(params string[] str)
+    public JoinedViaBlank(params string[] str)
         : this(
             new Joined(
-                "\r\n",
+                "",
                 str
             ),
             false
         )
     {
     }
-
-    private JoinedViaEol(IText text, bool live) : base(text, live)
+    
+    private JoinedViaBlank(IText text, bool live) : base(text, live)
     {
     }
 }

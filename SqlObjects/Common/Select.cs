@@ -11,8 +11,7 @@ namespace SqlObjects.Common;
 /// </summary>
 /// <param name="queries">expressions</param>
 public sealed class Select(IEnumerable<IQuery> queries) : QueryEnvelope(
-    new Formatted(
-        "{0}{1}",
+    new JoinedViaBlank(
         new TextWithEol(
             new TextOf("SELECT")
         ),

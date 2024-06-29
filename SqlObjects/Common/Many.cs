@@ -1,4 +1,5 @@
 ﻿using SqlObjects.Interfaces;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Text;
 using Joined = Yaapii.Atoms.Text.Joined;
@@ -10,8 +11,8 @@ public sealed class Many(IEnumerable<IQuery> queries) : QueryEnvelope(
         "({0})",
         new Joined(
             ",",
-            new Mapped<IQuery, string>(
-                query => query.Raw(),
+            new Mapped<IQuery, IText>(
+                query => new TextOf(query.Raw),
                 queries
             )
         )

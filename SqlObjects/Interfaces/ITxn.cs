@@ -5,5 +5,5 @@ public interface ITxn<T>
     /// <summary>
     /// Runs SQL queries in transaction
     /// </summary>
-    T Invoke();
+    T Invoke(Func<T> func);
 }

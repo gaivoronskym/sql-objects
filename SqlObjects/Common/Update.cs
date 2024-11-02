@@ -1,5 +1,6 @@
 ﻿using SqlObjects.Interfaces;
 using SqlObjects.Text;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.List;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
@@ -11,13 +12,20 @@ namespace SqlObjects.Common;
 /// UPDATE query
 /// </summary>
 /// <param name="from">name of table</param>
-/// <param name="params">columns and values</param>
+/// <param name="sqlParams">columns and values</param>
 /// <param name="queries">expressions</param>
-public sealed class Update(string from, IEnumerable<ISqlParam> @params, IEnumerable<IQuery> queries)
+public sealed class Update(string from, IEnumerable<ISqlParam> sqlParams, IEnumerable<IQuery> queries)
     : IQuery
 {
-    public Update(string from, IEnumerable<ISqlParam> @params, IQuery query)
-        : this(from, @params, new Queries(query))
+
+    public Update(string from, ISqlParam param, IQuery query)
+        : this(from, new ManyOf<ISqlParam>(param), new Queries(query))
+    {
+
+    }
+
+    public Update(string from, IEnumerable<ISqlParam> sqlParams, IQuery query)
+        : this(from, sqlParams, new Queries(query))
     {
         
     }
@@ -26,7 +34,12 @@ public sealed class Update(string from, IEnumerable<ISqlParam> @params, IEnumera
         : this(from, sqlParams, new ListOf<IQuery>())
     {
     }
-    
+
+    public Update(string from, ISqlParam param)
+        : this(from, new ManyOf<ISqlParam>(param), new ListOf<IQuery>())
+    {
+    }
+
     public string Raw()
     {
         return new Formatted(
@@ -34,7 +47,7 @@ public sealed class Update(string from, IEnumerable<ISqlParam> @params, IEnumera
             new TextOf(from),
             new Joined(
                 ",",
-                @params.Select(p => new Formatted("{0} = {1}", p.Key(), p.Query().Raw()))
+                sqlParams.Select(p => new Formatted("{0} = {1}", p.Key(), p.Query().Raw()))
             ),
             new TextIf(
                 new ScalarOf<bool>(queries.Any),

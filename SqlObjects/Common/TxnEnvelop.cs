@@ -37,7 +37,7 @@ public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, I
 
     private void Begin()
     {
-        new Execution(
+        new Statement(
             Conn,
             new QueryOf(
                 new Queries(
@@ -45,17 +45,17 @@ public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, I
                     begin
                 )
             )
-        ).Invoke();
+        ).Exec();
     }
     
     private void Commit()
     {
         if (HasTransaction())
         {
-            new Execution(
+            new Statement(
                 Conn,
                 commit
-            ).Invoke();
+            ).Exec();
         }
     }
     
@@ -63,10 +63,10 @@ public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, I
     {
         if (HasTransaction())
         {
-            new Execution(
+            new Statement(
                 Conn,
                 rollback
-            ).Invoke();
+            ).Exec();
         }
     }
 }

@@ -20,7 +20,7 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
 {
     protected override bool HasTransaction()
     {
-        var openedTransactions = new Execution<int>(
+        var openedTransactions = new Statement<int>(
             Conn,
             new Select(
                 new ListOf<IQuery>(
@@ -29,7 +29,7 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
                 "sys.sysprocesses",
                 new Where("open_tran", true)
             )
-        ).Invoke();
+        ).Exec();
 
         return openedTransactions > 0;
     }

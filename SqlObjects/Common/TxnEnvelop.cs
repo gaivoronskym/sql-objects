@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using SqlObjects.Interfaces;
-using Yaapii.Atoms;
 
 namespace SqlObjects.Common;
 
@@ -8,18 +7,16 @@ namespace SqlObjects.Common;
 /// Transaction wrapper
 /// </summary>
 /// <param name="conn">database connection</param>
-/// <param name="func">action to execute</param>
 /// <param name="isolationLevel"></param>
 /// <param name="begin"></param>
 /// <param name="commit"></param>
 /// <param name="rollback"></param>
-public abstract class TxnEnvelop<T>(IDbConnection conn, IFunc<T> func, IQuery isolationLevel, IQuery begin,
-        IQuery commit, IQuery rollback)
+public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
     : ITxn<T>
 {
     protected readonly IDbConnection Conn = conn;
 
-    public T Invoke()
+    public T Invoke(Func<T> func)
     {
         try
         {

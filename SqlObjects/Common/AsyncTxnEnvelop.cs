@@ -1,16 +1,14 @@
 ﻿using System.Data;
 using SqlObjects.Interfaces;
-using Yaapii.Atoms;
 
 namespace SqlObjects.Common;
 
-public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IFunc<Task<T>> func, IQuery isolationLevel, IQuery begin,
-        IQuery commit, IQuery rollback)
+public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
     : IAsyncTxn<T>
 {
     protected readonly IDbConnection Conn = conn;
 
-    public async Task<T> Invoke()
+    public async Task<T> Invoke(Func<Task<T>> func)
     {
         try
         {

@@ -2,5 +2,5 @@
 
 public interface IAsyncTxn<T>
 {
-    Task<T> Invoke();
+    Task<T> Invoke(Func<Task<T>> func);
 }

@@ -13,14 +13,14 @@ namespace SqlObjects;
 /// <param name="query">SQL query</param>
 /// <param name="timeout">command timeout</param>
 /// <typeparam name="T">type of result</typeparam>
-public sealed class Execution<T>(IDbConnection conn, IQuery query, int timeout) : IExecution<T>
+public sealed class Statement<T>(IDbConnection conn, IQuery query, int timeout) : IStatement<T>
 {
-    public Execution(IDbConnection conn, IQuery query)
+    public Statement(IDbConnection conn, IQuery query)
         : this(conn, query, 30)
     {
     }
 
-    public T Invoke()
+    public T Exec()
     {
         return conn.ExecuteScalar<T>(
             sql: query.Raw(),
@@ -32,7 +32,7 @@ public sealed class Execution<T>(IDbConnection conn, IQuery query, int timeout) 
 /// <summary>
 /// Runs SQL statement
 /// </summary>
-public sealed class Execution : IExecution
+public sealed class Statement : IStatement
 {
     private readonly IAction action;
 
@@ -40,14 +40,14 @@ public sealed class Execution : IExecution
     /// List of executions to bulk invoke
     /// </summary>
     /// <param name="executions"></param>
-    public Execution(params IExecution[] executions)
+    public Statement(params IStatement[] executions)
         : this(
             new ActionOf(
                 () =>
                 {
                     foreach (var execution in executions)
                     {
-                        execution.Invoke();
+                        execution.Exec();
                     }
                 }
             )
@@ -55,12 +55,12 @@ public sealed class Execution : IExecution
     {
     }
     
-    public Execution(IDbConnection conn, IQuery query)
+    public Statement(IDbConnection conn, IQuery query)
         : this(conn, query, 30)
     {
     }
 
-    public Execution(IDbConnection conn, IQuery query, int timeout)
+    public Statement(IDbConnection conn, IQuery query, int timeout)
         : this(
             new ActionOf(
                 () => conn.Execute(sql: query.Raw(), commandTimeout: timeout)
@@ -69,12 +69,12 @@ public sealed class Execution : IExecution
     {
     }
 
-    private Execution(IAction action)
+    private Statement(IAction action)
     {
         this.action = action;
     }
     
-    public void Invoke()
+    public void Exec()
     {
         action.Invoke();
     }

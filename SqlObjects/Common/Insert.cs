@@ -1,6 +1,7 @@
 ﻿using SqlObjects.Interfaces;
 using SqlObjects.Text;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.List;
 using Yaapii.Atoms.Text;
 
@@ -13,14 +14,14 @@ namespace SqlObjects.Common;
 public sealed class Insert(string table, IEnumerable<IQuery> queries) : QueryEnvelope(
     new TextWithSemicolon(
         new JoinedViaEol(
-            new Joined<IText>(
+            new Yaapii.Atoms.List.Joined<IText>(
                 new ListOf<IText>(
                     new Formatted(
                         "INSERT INTO {0}",
                         table
                     )
                 ),
-                new Mapped<IQuery, IText>(
+                new Yaapii.Atoms.List.Mapped<IQuery, IText>(
                     query => new TextOf(
                         query.Raw
                     ),
@@ -95,7 +96,20 @@ public sealed class Insert(string table, IEnumerable<IQuery> queries) : QueryEnv
         : this(table, new ListOf<IRecord>(record))
     {
     }
-    
+
+    public Insert(string table, IRecord record, IQuery query)
+        : this(
+            table,
+            new Queries(
+                new Records(
+                    new ManyOf<IRecord>(record)
+                ),
+                query
+            )
+        )
+    {
+    }
+
     public Insert(string table, IEnumerable<IRecord> records)
         : this(
             table,

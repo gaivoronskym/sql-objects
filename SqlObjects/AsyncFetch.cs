@@ -26,7 +26,7 @@ public sealed class AsyncFetch(IDbConnection conn, IQuery query, int timeout) : 
             commandType: CommandType.Text
         );
             
-        var list = res.Cast<IDictionary<string, object>>();
+        var list = res.Cast<IDictionary<string, string>>();
         
         IList<IRow> rows = new List<IRow>();
         foreach (var row in list)

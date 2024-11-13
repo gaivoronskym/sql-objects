@@ -2,7 +2,7 @@
 
 namespace SqlObjects;
 
-public sealed class Row(IDictionary<string, object> dictionary) : Dictionary<string, object>(dictionary), IRow
+public sealed class Row(IDictionary<string, string> dictionary) : Dictionary<string, string>(dictionary), IRow
 {
     public int AsInt(string key)
     {

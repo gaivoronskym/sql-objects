@@ -1,6 +1,6 @@
 ﻿namespace SqlObjects.Interfaces;
 
-public interface IRow : IDictionary<string, object>
+public interface IRow : IDictionary<string, string>
 {
     int AsInt(string key);
     

@@ -4,33 +4,50 @@ namespace SqlObjects;
 
 public sealed class Row(IDictionary<string, object> dictionary) : Dictionary<string, object>(dictionary), IRow
 {
-    public int AsInt(string key)
+    public int Int(string key)
     {
         return Convert.ToInt32(this[key]);
     }
 
-    public long AsLong(string key)
+    public long Long(string key)
     {
         return Convert.ToInt64(this[key]);
     }
 
-    public string AsString(string key)
+    public string String(string key)
     {
         return Convert.ToString(this[key]) ?? string.Empty;
     }
 
-    public decimal AsDecimal(string key)
+    public decimal Decimal(string key)
     {
         return Convert.ToDecimal(this[key]);
     }
 
-    public bool AsBoolean(string key)
+    public bool Boolean(string key)
     {
         return Convert.ToBoolean(this[key]);
     }
 
-    public TEnum AsEnumeration<TEnum>(string key) where TEnum : struct
+    public DateTime DateTime(string key)
     {
-        return Enum.Parse<TEnum>(AsString(key));
+        return Convert.ToDateTime(this[key]);
+    }
+
+    public bool HasVal(string key)
+    {
+        if (!this.ContainsKey(key))
+        {
+            return false;
+        }
+
+        var val = this[key];
+
+        return val is not null;
+    }
+
+    public TEnum Enum<TEnum>(string key) where TEnum : struct
+    {
+        return System.Enum.Parse<TEnum>(String(key));
     }
 }

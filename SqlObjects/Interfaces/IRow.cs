@@ -2,15 +2,19 @@
 
 public interface IRow : IDictionary<string, object>
 {
-    int AsInt(string key);
+    int Int(string key);
     
-    long AsLong(string key);
+    long Long(string key);
 
-    string AsString(string key);
+    string String(string key);
 
-    decimal AsDecimal(string key);
+    decimal Decimal(string key);
     
-    bool AsBoolean(string key);
+    bool Boolean(string key);
 
-    TEnum AsEnumeration<TEnum>(string key) where TEnum : struct;
+    DateTime DateTime(string key);
+
+    bool HasVal(string key);
+
+    TEnum Enum<TEnum>(string key) where TEnum : struct;
 }

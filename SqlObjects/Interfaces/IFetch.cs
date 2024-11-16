@@ -2,6 +2,8 @@
 
 public interface IFetch
 {
+    IRow Row(IQuery query);
+
     /// <summary>
     /// Fetching records from database
     /// </summary>

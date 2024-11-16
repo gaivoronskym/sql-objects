@@ -37,6 +37,15 @@ public sealed class Select(IEnumerable<IQuery> queries) : QueryEnvelope(
     {
     }
 
+    public Select(string columns, string from, params IQuery[] queries)
+        : this(
+            new Single<string>(columns),
+            from,
+            queries
+        )
+    {
+    }
+
     public Select(IEnumerable<string> columns, string from, params IQuery[] queries)
         : this(
             new Joined<IQuery>(

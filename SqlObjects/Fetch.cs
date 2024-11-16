@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using SqlObjects.Interfaces;
+using Yaapii.Atoms.Enumerable;
 
 namespace SqlObjects;
 
@@ -21,6 +22,12 @@ public sealed class Fetch : IFetch
     {
         this.conn = conn;
         this.timeout = timeout;
+    }
+
+    public IRow Row(IQuery query)
+    {
+        var rows = this.Rows(query);
+        return new ItemAt<IRow>(rows).Value();
     }
 
     public IList<IRow> Rows(IQuery query)

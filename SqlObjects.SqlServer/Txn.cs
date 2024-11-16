@@ -1,5 +1,4 @@
-﻿using System.Data;
-using SqlObjects.Common;
+﻿using SqlObjects.Common;
 using SqlObjects.Interfaces;
 using Yaapii.Atoms.List;
 
@@ -8,20 +7,25 @@ namespace SqlObjects.SqlServer;
 /// <summary>
 /// Runs SQL query in transaction
 /// </summary>
-/// <param name="conn"></param>
-/// <param name="isolationLevel"></param>
-public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
-    : TxnEnvelop<T>(
-        conn,
-        isolationLevel,
-        new RawSql("BEGIN TRANSACTION;"),
-        new RawSql("COMMIT TRANSACTION;"),
-        new RawSql("ROLLBACK TRANSACTION;"))
+public abstract class Txn<T>: TxnEnvelop<T>
 {
+    private readonly IStatement stat;
+
+    protected Txn(IStatement stat, IQuery isolationLevel)
+        : base(
+            stat,
+            isolationLevel,
+            new RawSql("BEGIN TRANSACTION;"),
+            new RawSql("COMMIT TRANSACTION;"),
+            new RawSql("ROLLBACK TRANSACTION;")
+        )
+    {
+        this.stat = stat;
+    }
+
     protected override bool HasTransaction()
     {
-        var openedTransactions = new Statement<int>(
-            Conn,
+        var openedTransactions = this.stat.Exec<int>(
             new Select(
                 new ListOf<IQuery>(
                     new RawSql("COUNT(*)")
@@ -29,7 +33,7 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
                 "sys.sysprocesses",
                 new Where("open_tran", true)
             )
-        ).Exec();
+        );
 
         return openedTransactions > 0;
     }
@@ -37,9 +41,8 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
     /// <summary>
     /// Transaction with READ COMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="conn"></param>
-    public sealed class ReadCommitted(IDbConnection conn) : Txn<T>(
-        conn,
+    public sealed class ReadCommitted(IStatement stat) : Txn<T>(
+        stat,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
     {
     }
@@ -47,9 +50,8 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
     /// </summary>
-    /// <param name="conn"></param>
-    public sealed class ReadUnCommitted(IDbConnection conn) : Txn<T>(
-        conn,
+    public sealed class ReadUnCommitted(IStatement stat) : Txn<T>(
+        stat,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
     {
     }
@@ -57,9 +59,8 @@ public abstract class Txn<T>(IDbConnection conn, IQuery isolationLevel)
     /// <summary>
     /// Transaction with SERIALIZABLE ISOLATION LEVEL
     /// </summary>
-    /// <param name="conn"></param>
-    public sealed class Serializable(IDbConnection conn) : Txn<T>(
-        conn,
+    public sealed class Serializable(IStatement stat) : Txn<T>(
+        stat,
         new RawSql("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;"))
     {
     }

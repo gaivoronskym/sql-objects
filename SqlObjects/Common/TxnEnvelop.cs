@@ -1,20 +1,26 @@
-﻿using System.Data;
-using SqlObjects.Interfaces;
+﻿using SqlObjects.Interfaces;
 
 namespace SqlObjects.Common;
 
 /// <summary>
 /// Transaction wrapper
 /// </summary>
-/// <param name="conn">database connection</param>
-/// <param name="isolationLevel"></param>
-/// <param name="begin"></param>
-/// <param name="commit"></param>
-/// <param name="rollback"></param>
-public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
-    : ITxn<T>
+public abstract class TxnEnvelop<T> : ITxn<T>
 {
-    protected readonly IDbConnection Conn = conn;
+    private readonly IStatement stat;
+    private readonly IQuery isolationLevel;
+    private readonly IQuery begin;
+    private readonly IQuery commit;
+    private readonly IQuery rollback;
+
+    protected TxnEnvelop(IStatement stat, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
+    {
+        this.stat = stat;
+        this.isolationLevel = isolationLevel;
+        this.begin = begin;
+        this.commit = commit;
+        this.rollback = rollback;
+    }
 
     public T Invoke(Func<T> func)
     {
@@ -37,25 +43,21 @@ public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, I
 
     private void Begin()
     {
-        new Statement(
-            Conn,
+        this.stat.Exec(
             new QueryOf(
                 new Queries(
                     isolationLevel,
                     begin
                 )
             )
-        ).Exec();
+        );
     }
     
     private void Commit()
     {
         if (HasTransaction())
         {
-            new Statement(
-                Conn,
-                commit
-            ).Exec();
+            this.stat.Exec(commit);
         }
     }
     
@@ -63,10 +65,7 @@ public abstract class TxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, I
     {
         if (HasTransaction())
         {
-            new Statement(
-                Conn,
-                rollback
-            ).Exec();
+            this.stat.Exec(rollback);
         }
     }
 }

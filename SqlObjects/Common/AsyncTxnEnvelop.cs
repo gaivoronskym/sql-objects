@@ -1,12 +1,23 @@
-﻿using System.Data;
-using SqlObjects.Interfaces;
+﻿using SqlObjects.Interfaces;
 
 namespace SqlObjects.Common;
 
-public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
-    : IAsyncTxn<T>
+public abstract class AsyncTxnEnvelop<T> : IAsyncTxn<T>
 {
-    protected readonly IDbConnection Conn = conn;
+    private readonly IAsyncStatement stat;
+    private readonly IQuery isolationLevel;
+    private readonly IQuery begin;
+    private readonly IQuery commit;
+    private readonly IQuery rollback;
+
+    protected AsyncTxnEnvelop(IAsyncStatement stat, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
+    {
+        this.stat = stat;
+        this.isolationLevel = isolationLevel;
+        this.begin = begin;
+        this.commit = commit;
+        this.rollback = rollback;
+    }
 
     public async Task<T> Invoke(Func<Task<T>> func)
     {
@@ -29,25 +40,21 @@ public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IQuery isolationLev
 
     private Task BeginAsync()
     {
-        return new AsyncExecution(
-            Conn,
+        return this.stat.ExecAsync(
             new QueryOf(
                 new Queries(
                     isolationLevel,
                     begin
                 )
             )
-        ).InvokeAsync();
+        );
     }
 
     private async Task CommitAsync()
     {
         if (await HasTransactionAsync())
         {
-            await new AsyncExecution(
-                Conn,
-                commit
-            ).InvokeAsync();
+            await this.stat.ExecAsync(commit);
         }
     }
 
@@ -55,10 +62,7 @@ public abstract class AsyncTxnEnvelop<T>(IDbConnection conn, IQuery isolationLev
     {
         if (await HasTransactionAsync())
         {
-            await new AsyncExecution(
-                Conn,
-                rollback
-            ).InvokeAsync();
+            await this.stat.ExecAsync(rollback);
         }
     }
 }

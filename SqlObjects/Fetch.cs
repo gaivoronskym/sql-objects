@@ -7,18 +7,23 @@ namespace SqlObjects;
 /// <summary>
 /// Returns records from database
 /// </summary>
-/// <param name="conn">database connection</param>
-/// <param name="query">SQL query</param>
-/// <param name="timeout">command timeout</param>
-public sealed class Fetch(IDbConnection conn, IQuery query, int timeout) : IFetch
+public sealed class Fetch : IFetch
 {
-    public Fetch(IDbConnection conn, IQuery query)
-        : this(conn, query, 30)
+    private readonly IDbConnection conn;
+    private readonly int timeout;
+
+    public Fetch(IDbConnection conn)
+        : this(conn, 30)
     {
-        
     }
 
-    public IList<IRow> Rows()
+    public Fetch(IDbConnection conn, int timeout)
+    {
+        this.conn = conn;
+        this.timeout = timeout;
+    }
+
+    public IList<IRow> Rows(IQuery query)
     {
         var res = conn.Query(
             sql: query.Raw(),

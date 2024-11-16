@@ -6,5 +6,5 @@ public interface IFetch
     /// Fetching records from database
     /// </summary>
     /// <returns>rows</returns>
-    IList<IRow> Rows();
+    IList<IRow> Rows(IQuery query);
 }

@@ -7,18 +7,23 @@ namespace SqlObjects;
 /// <summary>
 /// Asynchronously returns records from database
 /// </summary>
-/// <param name="conn">database connection</param>
-/// <param name="query">SQL query</param>
-/// <param name="timeout">command timeout</param>
-public sealed class AsyncFetch(IDbConnection conn, IQuery query, int timeout) : IAsyncFetch
+public sealed class AsyncFetch : IAsyncFetch
 {
-    public AsyncFetch(IDbConnection conn, IQuery query)
-        : this(conn, query, 30)
+    private readonly IDbConnection conn;
+    private readonly int timeout;
+
+    public AsyncFetch(IDbConnection conn)
+        : this(conn, 30)
     {
-        
     }
 
-    public async Task<IList<IRow>> RowsAsync()
+    public AsyncFetch(IDbConnection conn, int timeout)
+    {
+        this.conn = conn;
+        this.timeout = timeout;
+    }
+
+    public async Task<IList<IRow>> RowsAsync(IQuery query)
     {
         var res = await conn.QueryAsync(
             sql: query.Raw(),

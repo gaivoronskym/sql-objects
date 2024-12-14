@@ -5,24 +5,24 @@ namespace SqlObjects.Common;
 /// <summary>
 /// Transaction wrapper
 /// </summary>
-public abstract class TxnEnvelop<T> : ITxn<T>
+public abstract class TxnEnvelop : ITxn
 {
-    private readonly IStatement stat;
+    private readonly IConsole con;
     private readonly IQuery isolationLevel;
     private readonly IQuery begin;
     private readonly IQuery commit;
     private readonly IQuery rollback;
 
-    protected TxnEnvelop(IStatement stat, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
+    protected TxnEnvelop(IConsole con, IQuery isolationLevel, IQuery begin, IQuery commit, IQuery rollback)
     {
-        this.stat = stat;
+        this.con = con;
         this.isolationLevel = isolationLevel;
         this.begin = begin;
         this.commit = commit;
         this.rollback = rollback;
     }
 
-    public T Invoke(Func<T> func)
+    public T Invoke<T>(Func<T> func)
     {
         try
         {
@@ -34,16 +34,33 @@ public abstract class TxnEnvelop<T> : ITxn<T>
         catch (Exception ex)
         {
             Rollback();
-            Console.WriteLine(ex);
+            System.Console.WriteLine(ex);
+            throw;
+        }
+    }
+
+    public async Task<T> Invoke<T>(Func<Task<T>> func)
+    {
+        try
+        {
+            Begin();
+            var res = await func.Invoke();
+            Commit();
+            return res;
+        }
+        catch (Exception ex)
+        {
+            Rollback();
+            System.Console.WriteLine(ex);
             throw;
         }
     }
 
     protected abstract bool HasTransaction();
 
-    private void Begin()
+    public void Begin()
     {
-        this.stat.Exec(
+        this.con.Exec(
             new QueryOf(
                 new Queries(
                     isolationLevel,
@@ -52,20 +69,20 @@ public abstract class TxnEnvelop<T> : ITxn<T>
             )
         );
     }
-    
-    private void Commit()
+
+    public void Commit()
     {
         if (HasTransaction())
         {
-            this.stat.Exec(commit);
+            this.con.Exec(commit);
         }
     }
-    
-    private void Rollback()
+
+    public void Rollback()
     {
         if (HasTransaction())
         {
-            this.stat.Exec(rollback);
+            this.con.Exec(rollback);
         }
     }
 }

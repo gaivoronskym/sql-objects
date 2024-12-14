@@ -7,42 +7,40 @@ namespace SqlObjects.SqlServer;
 /// <summary>
 /// Runs SQL query in transaction
 /// </summary>
-public abstract class Txn<T>: TxnEnvelop<T>
+public abstract class Txn: TxnEnvelop
 {
-    private readonly IStatement stat;
+    private readonly IConsole iConsole;
 
-    protected Txn(IStatement stat, IQuery isolationLevel)
+    protected Txn(IConsole con, IQuery isolationLevel)
         : base(
-            stat,
+            con,
             isolationLevel,
             new RawSql("BEGIN TRANSACTION;"),
             new RawSql("COMMIT TRANSACTION;"),
             new RawSql("ROLLBACK TRANSACTION;")
         )
     {
-        this.stat = stat;
+        this.iConsole = iConsole;
     }
 
     protected override bool HasTransaction()
     {
-        var openedTransactions = this.stat.Exec<int>(
+        var openedTransactions = this.iConsole.Exec(
             new Select(
-                new ListOf<IQuery>(
-                    new RawSql("COUNT(*)")
-                ),
+                "*",
                 "sys.sysprocesses",
                 new Where("open_tran", true)
             )
         );
 
-        return openedTransactions > 0;
+        return openedTransactions.Any();
     }
 
     /// <summary>
     /// Transaction with READ COMMITTED ISOLATION LEVEL
     /// </summary>
-    public sealed class ReadCommitted(IStatement stat) : Txn<T>(
-        stat,
+    public sealed class ReadCommitted(IConsole iConsole) : Txn(
+        iConsole,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"))
     {
     }
@@ -50,8 +48,8 @@ public abstract class Txn<T>: TxnEnvelop<T>
     /// <summary>
     /// Transaction with READ UNCOMMITTED ISOLATION LEVEL
     /// </summary>
-    public sealed class ReadUnCommitted(IStatement stat) : Txn<T>(
-        stat,
+    public sealed class ReadUnCommitted(IConsole iConsole) : Txn(
+        iConsole,
         new RawSql("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;"))
     {
     }
@@ -59,8 +57,8 @@ public abstract class Txn<T>: TxnEnvelop<T>
     /// <summary>
     /// Transaction with SERIALIZABLE ISOLATION LEVEL
     /// </summary>
-    public sealed class Serializable(IStatement stat) : Txn<T>(
-        stat,
+    public sealed class Serializable(IConsole iConsole) : Txn(
+        iConsole,
         new RawSql("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;"))
     {
     }

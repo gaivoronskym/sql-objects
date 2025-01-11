@@ -1,12 +1,8 @@
-﻿namespace SqlObjects.Types;
+﻿using SqlObjects.Common;
+
+namespace SqlObjects.Types;
 
 /// <summary>
 /// Returns SQL NULL
 /// </summary>
-public sealed class SqlNull : IQuery
-{
-    public string Sql()
-    {
-        return "NULL";
-    }
-}
+public sealed class SqlNull() : QueryEnvelope("NULL");
